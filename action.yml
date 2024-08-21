@@ -157,9 +157,18 @@ runs:
       shell: ${{ env.SHELL }}
       run: ${{ env.SUDO }} tailscaled ${{ env.TAILSCALED_ARGS }} &
 
-    - name: Connect to Tailscale
+    - name: Connect to Tailscale (macOS and Linux)
       uses: gacts/run-and-post-run@v1
       with:
-        run: ${{ env.SUDO }} tailscale up ${{ env.TAILSCALE_UP_ARGS }}
-        post: ${{ env.SUDO }} tailscale down
+        run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
+        post: sudo tailscale down
         shell: ${{ env.SHELL }}
+
+    - name: Connect to Tailscale (macOS and Linux)
+      uses: gacts/run-and-post-run@v1
+      with:
+        run: tailscale up ${{ env.TAILSCALE_UP_ARGS }}
+        post: tailscale down
+        shell: ${{ env.SHELL }}
+        working-directory: /Program Files/Tailscale
+
