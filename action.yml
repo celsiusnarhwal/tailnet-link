@@ -153,8 +153,6 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       shell: ${{ env.SHELL }}
       run: choco install tailscale -y
-      env:
-        ChocolateyToolsLocation: D:/tools
 
     - name: Run tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
@@ -173,7 +171,7 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: .\tailscale.exe
+        run: .\tailscale.exe up ${{ env.TAILSCALE_UP_ARGS }}
         post: tailscale down
         shell: ${{ env.SHELL }}
         working-directory: 'C:/Program Files/Tailscale'
