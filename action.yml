@@ -48,14 +48,14 @@ runs:
         import os
         import sys
         
-        shell = "powershell" if sys.platform == "win32" else "bash"
+        shell = "powershell" if sys.platform == "win32" else "${{ env.SHELL }}"
         sudo = "sudo" if sys.platform != "win32" else ""
         
         print(f"SHELL={shell}", file=open(os.getenv("GITHUB_ENV"), "a"))
         print(f"SUDO={sudo}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
     - name: Install Dependencies
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: pip install pydantic-settings
 
     - name: Handle Inputs
@@ -138,22 +138,22 @@ runs:
 
     - name: Install Tailscale (Linux)
       if: ${{ runner.os == 'Linux' }}
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: curl -fsSL https://tailscale.com/install.sh | sh
 
     - name: Install Tailscale (macoS)
       if: ${{ runner.os == 'macOS' }}
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: brew install tailscale
 
     - name: Install Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: choco install tailscale -y
 #
     - name: Run tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
 
     - name: Connect to Tailscale (macOS and Linux)
@@ -162,7 +162,7 @@ runs:
       with:
         run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
         post: sudo tailscale down
-        shell: bash
+        shell: ${{ env.SHELL }}
 
     - name: Connect to Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
@@ -170,6 +170,6 @@ runs:
       with:
         run: tailscale up
         post: tailscale down
-        shell: bash
+        shell: ${{ env.SHELL }}
         working-directory: C:/Program Files/Tailscale
 
