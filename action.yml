@@ -173,7 +173,8 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: ls 'C:/Program Files/Tailscale'
+        run: ls
         post: tailscale down
         shell: ${{ env.SHELL }}
+        working-directory: 'C:/Program Files/Tailscale'
 
