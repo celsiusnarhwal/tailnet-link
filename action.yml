@@ -136,35 +136,23 @@ runs:
         TS_HOSTNAME: ${{ inputs.hostname }}
         TS_TAILNET_LOCK: ${{ inputs.tailnet-lock }}
 
-    - name: Set Up Go
-      uses: actions/setup-go@v5
-      with:
-        go-version: '>=1.0.0'
-
-    - name: Install Tailscale
+    - name: Install Tailscale (Linux)
+      if: ${{ runner.os == 'Linux' }}
       shell: ${{ env.SHELL }}
-      run: | 
-        go install tailscale.com/cmd/tailscale@latest
-        go install tailscale.com/cmd/tailscaled@latest
+      run: curl -fsSL https://tailscale.com/install.sh | sh
 
+    - name: Install Tailscale (macoS)
+      if: ${{ runner.os == 'macOS' }}
+      shell: ${{ env.SHELL }}
+      run: brew install tailscale
 
-#    - name: Install Tailscale (Linux)
-#      if: ${{ runner.os == 'Linux' }}
-#      shell: ${{ env.SHELL }}
-#      run: curl -fsSL https://tailscale.com/install.sh | sh
-#
-#    - name: Install Tailscale (macoS)
-#      if: ${{ runner.os == 'macOS' }}
-#      shell: ${{ env.SHELL }}
-#      run: brew install tailscale
-#
-#    - name: Install Tailscale (Windows)
-#      if: ${{ runner.os == 'Windows' }}
-#      shell: ${{ env.SHELL }}
-#      run: choco install tailscale -y
+    - name: Install Tailscale (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      shell: ${{ env.SHELL }}
+      run: choco install tailscale -y
 #
     - name: Run tailscaled (macOS and Linux)
-      #if: ${{ runner.os != 'Windows' }}
+      if: ${{ runner.os != 'Windows' }}
       shell: ${{ env.SHELL }}
       run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
 
