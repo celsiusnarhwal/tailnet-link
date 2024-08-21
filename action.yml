@@ -168,7 +168,7 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: tailscale up ${{ env.TAILSCALE_UP_ARGS }}
+        run: echo $PATH
         post: tailscale down
         shell: ${{ env.SHELL }}
 
