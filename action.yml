@@ -158,13 +158,15 @@ runs:
       run: ${{ env.SUDO }} tailscaled ${{ env.TAILSCALED_ARGS }} &
 
     - name: Connect to Tailscale (macOS and Linux)
+      if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
         run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
         post: sudo tailscale down
         shell: ${{ env.SHELL }}
 
-    - name: Connect to Tailscale (macOS and Linux)
+    - name: Connect to Tailscale (Windows)
+      if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
         run: tailscale up ${{ env.TAILSCALE_UP_ARGS }}
