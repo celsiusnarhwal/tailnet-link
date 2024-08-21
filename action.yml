@@ -69,48 +69,47 @@ runs:
         
         class TailscaleSettings(BaseSettings):
             model_config = SettingsConfigDict(env_prefix="TS_")
-            
+        
             authkey: str
             tags: str
             extra_args: str
             tailscaled_extra_args: str
             hostname: str
             tailnet_lock: bool
-            
+        
             @property
             def authkey_is_oauth(self):
                 return self.authkey.startswith("tskey-client")
-            
+        
             @property
             def full_authkey(self):
                 key = self.authkey
-                
+        
                 if self.authkey_is_oauth:
                     key += "?preauthorized=true&ephemeral=true"
-                
+        
                 return key
-            
+        
             @model_validator(mode="after")
             def validate_auth_info(self):
                 if self.tailnet_lock and self.authkey_is_oauth:
                     error("You must provide an standard auth key when using tailnet lock.")
-                
+        
                 return self
-            
+        
             @model_validator(mode="after")
             def validate_tags(self):
                 if self.authkey_is_oauth and not self.tags:
                     error("You must provide at least one tag when using an OAuth secret.")
-                
+        
                 return self
-            
+        
             @field_validator("hostname")
             def validate_hostname(cls, v):
                 return v or f"github-{socket.gethostname()}"
         
         
         settings = TailscaleSettings()
-        print(settings.tags)
         
         tailscaled_args = settings.tailscaled_extra_args
         
@@ -122,7 +121,7 @@ runs:
         tailscale_args = f"--auth-key '{settings.full_authkey}' --hostname {settings.hostname} --accept-routes {settings.extra_args}"
         
         if settings.tags:
-            tailscale_up_args = f"--advertise-tags {settings.tags} {tailscale_args}" 
+            tailscale_args = f"--advertise-tags {settings.tags} {tailscale_args}" 
         
         print(f"TAILSCALE_UP_ARGS={tailscale_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
       env:
@@ -165,7 +164,7 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run:  ./tailscale.exe up ${{ env.TAILSCALE_UP_ARGS }}
+        run: ./tailscale.exe up ${{ env.TAILSCALE_UP_ARGS }}
         post: ./tailscale.exe down
         shell: ${{ env.SHELL }}
         working-directory: 'C:/Program Files/Tailscale'
