@@ -128,17 +128,22 @@ runs:
         TS_HOSTNAME: ${{ inputs.hostname }}
         TS_TAILNET_LOCK: ${{ inputs.tailnet-lock }}
 
-    - name: Install Tailscale (Unix)
-      if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
+    - name: Install Tailscale (Linux)
+      if: ${{ runner.os == 'Linux' }}
       shell: ${{ env.SHELL }}
       run: curl -fsSL https://tailscale.com/install.sh | sh
+
+    - name: Install Tailscale (macoS)
+      if: ${{ runner.os == 'macOS' }}
+      shell: ${{ env.SHELL }}
+      run: brew install tailscale
 
     - name: Install Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
       shell: ${{ env.SHELL }}
       run: choco install tailscale -y
 
-    - name: Run tailscaled (Unix)
+    - name: Run tailscaled (macOS and Linux)
       shell: bash
       run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
 
