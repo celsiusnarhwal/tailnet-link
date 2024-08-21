@@ -39,7 +39,12 @@ runs:
     - name: Set Up Python
       uses: actions/setup-python@v5
 
-    - name: Install Pydantic Settings
+    - name: Install Pydantic Settings (Unix)
+      shell: bash
+      run: pip install pydantic-settings
+
+    - name: Install Pydantic Settings (Windows)
+      shell: powershell
       run: pip install pydantic-settings
 
     - name: Handle Inputs
