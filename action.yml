@@ -1,1 +1,140 @@
+name: Tailnet Link
+description: Connect your GitHub Action workflow to Tailscale
+branding:
+  icon: arrow-right-circle
+  color: gray-dark
+inputs:
+  authkey:
+    description: A Tailscale auth key.
+    required: false
+  oauth-secret:
+    description: A Tailscale OAuth client secret. If provided, this will be preferred over an auth key.
+    required: false
+  tags:
+    description: |
+      A comma-separated list of tags to apply to nodes authenticated with this action.
+      You must specify at least one tag.
+    required: true
+  version:
+    description: The version of Tailscale to use. The latest version will be installed if this is not specified.
+    required: false
+  args:
+    description: Optional additional arguments to `tailscale up`.
+    required: false
+  tailscaled-args:
+    description: 'Optional additional arguments to `tailscaled`'
+    required: false
+  hostname:
+    description: A fixed machine name.
+    required: false
+  tailnet-lock:
+    description: |
+      Set this to `true` if, and only if, you're using tailnet lock. If you're unsure whether you need to set
+      this option, you probably don't.
+    required: true
+    default: "false"
+runs:
+  using: composite
+  steps:
+    - name: Set Up Python
+      uses: actions/setup-python@v5
 
+    - name: Install Pydantic Settings
+      run: pip install pydantic-settings
+
+    - name: Handle Inputs
+      shell: python
+      run: |
+        import os
+        import socket
+        from tempfile import TemporaryDirectory
+        
+        from pydantic import field_validator, model_validator
+        from pydantic_settings import BaseSettings, SettingsConfigDict
+        
+        
+        def error(message: str):
+            print(f"::error::{message}")
+            exit(1)
+        
+        
+        class TailscaleSettings(BaseSettings):
+            model_config = SettingsConfigDict(env_prefix="TS_")
+            
+            authkey: str
+            oauth_secret: str
+            tags: str
+            version: str
+            up_args: str
+            tailscaled_args: str
+            hostname: str
+            tailnet_lock: bool
+            
+            @model_validator(mode="after")
+            def validate_auth_info(self):
+                if self.tailnet_lock and not self._authkey:
+                    error("You must provide an auth key when using tailnet lock.")
+                if not (self.authkey or self.oauth_secret):
+                    error("You must provide either an OAuth secret or an auth key.")
+                
+                return self
+            
+            @field_validator("tags")
+            def validate_tags(cls, v):
+                if not v:
+                    error("You must provide at least one tag.")
+                
+                return v
+            
+            @field_validator("hostname")
+            def validate_hostname(cls, v):
+                return v or f"github-{socket.gethostname()}"
+        
+        
+        settings = TailscaleSettings()
+        
+        tailscaled_args = settings.tailscaled_args
+        
+        if settings.tailnet_lock:
+            tailscaled_args += f" -statedir {TemporaryDirectory().name}"
+        
+        print(f"TAILSCALED_ARGS={tailscaled_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
+        
+        if settings.oauth_secret:
+            authkey = f"{settings.oauth_secret}?preauthorized=true&ephemeral=true"
+        else:
+            authkey = settings.authkey
+        
+        tailscale_up_args = f"--auth-key {authkey} --advertise-tags {settings.tags} --hostname {settings.hostname} --accept-routes {settings.up_args}"
+        
+        print(f"TAILSCALE_UP_ARGS={tailscale_up_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
+      env:
+        TS_AUTHKEY: ${{ inputs.authkey }}
+        TS_OAUTH_SECRET: ${{ inputs.oauth_secret }}
+        TS_TAGS: ${{ inputs.tags }}
+        TS_VERSION: ${{ inputs.version }}
+        TS_ARGS: ${{ inputs.args }}
+        TS_TAILSCALED_ARGS: ${{ inputs.tailscaled-args }}
+        TS_HOSTNAME: ${{ inputs.hostname }}
+        TS_TAILNET_LOCK: ${{ inputs.tailnet-lock }}
+
+    - name: Install Tailscale (Linux)
+      if: ${{ runner.os != 'Linux' }}
+      run: curl -fsSL https://tailscale.com/install.sh | sh
+
+    - name: Instal Tailscale (macOS)
+      if: ${{ runner.os != 'macOS' }}
+      run: brew install tailscale
+
+    - name: Install Tailscale (Windows)
+      if: ${{ runner.os != 'Windows' }}
+      run: choco install tailscale -y
+
+    - name: Run tailscaled (macOS and Linux)
+      run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
+
+    - name: Connect to Tailscale
+      uses: gacts/run-and-post-run@v1
+      with:
+        run: tailscale up ${{ env.TAILSCALE_UP_ARGS }}
+        post: tailscale down
