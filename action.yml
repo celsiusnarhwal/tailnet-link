@@ -128,7 +128,7 @@ runs:
         
         print(f"TAILSCALE_UP_ARGS={tailscale_up_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
         
-        tailscale_exe = "C:/Program Files/Tailscale/tailscale.exe" if sys.platform == "win32" else "tailscale"
+        tailscale_exe = "'C:/Program Files/Tailscale/tailscale.exe'" if sys.platform == "win32" else "tailscale"
         print(f"TAILSCALE_EXE={tailscale_exe}", file=open(os.getenv("GITHUB_ENV"), "a"))
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
