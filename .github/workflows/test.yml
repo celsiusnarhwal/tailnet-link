@@ -19,3 +19,4 @@ jobs:
           authkey: ${{ inputs.authkey }}
           tags: tag:github-actions
           extra-args: --accept-routes --accept-dns
+          tailnet-lock: 'true'
