@@ -120,17 +120,21 @@ runs:
 
     - name: Install Tailscale (Linux)
       if: ${{ runner.os != 'Linux' }}
+      shell: bash
       run: curl -fsSL https://tailscale.com/install.sh | sh
 
     - name: Instal Tailscale (macOS)
       if: ${{ runner.os != 'macOS' }}
+      shell: bash
       run: brew install tailscale
 
     - name: Install Tailscale (Windows)
       if: ${{ runner.os != 'Windows' }}
+      shell: powershell
       run: choco install tailscale -y
 
     - name: Run tailscaled (macOS and Linux)
+      shell: bash
       run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
 
     - name: Connect to Tailscale
