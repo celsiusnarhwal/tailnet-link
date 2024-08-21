@@ -72,7 +72,6 @@ runs:
             model_config = SettingsConfigDict(env_prefix="TS_")
             
             authkey: str
-            oauth_secret: str
             tags: str
             extra_args: str
             tailscaled_extra_args: str
