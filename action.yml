@@ -48,7 +48,7 @@ runs:
         import os
         import sys
         
-        shell = "powershell" if sys.platform == "win32" else "${{ env.SHELL }}"
+        shell = "powershell" if sys.platform == "win32" else "bash"
         sudo = "sudo" if sys.platform != "win32" else ""
         
         print(f"SHELL={shell}", file=open(os.getenv("GITHUB_ENV"), "a"))
