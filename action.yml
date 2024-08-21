@@ -143,7 +143,9 @@ runs:
 
     - name: Install Tailscale
       shell: ${{ env.SHELL }}
-      run: go install tailscale.com/cmd/tailscale{,d}@latest
+      run: | 
+        go install tailscale.com/cmd/tailscale@latest
+        go install tailscale.com/cmd/tailscaled@latest
 
 
 #    - name: Install Tailscale (Linux)
