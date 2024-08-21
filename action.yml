@@ -5,11 +5,8 @@ branding:
   color: gray-dark
 inputs:
   authkey:
-    description: A Tailscale auth key.
-    required: false
-  oauth-secret:
-    description: A Tailscale OAuth client secret. If provided, this will be preferred over an auth key.
-    required: false
+    description: A Tailscale auth key or OAuth secret.
+    required: true
   tags:
     description: |
       A comma-separated list of tags to apply to nodes authenticated with this action.
@@ -48,9 +45,7 @@ runs:
         import os
         import sys
         
-        shell = "powershell" if sys.platform == "win32" else "bash"
-        sudo = "sudo" if sys.platform != "win32" else ""
-        
+        shell = "powershell" if sys.platform == "win32" else "bash"        
         print(f"SHELL={shell}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
     - name: Install Dependencies
@@ -60,7 +55,6 @@ runs:
     - name: Handle Inputs
       shell: python
       run: |
-        import sys
         import os
         import socket
         from tempfile import TemporaryDirectory
@@ -80,23 +74,34 @@ runs:
             authkey: str
             oauth_secret: str
             tags: str
-            up_args: str
-            tailscaled_args: str
+            extra_args: str
+            tailscaled_extra_args: str
             hostname: str
             tailnet_lock: bool
             
+            @property
+            def authkey_is_oauth(self):
+                return self.authkey.startswith("tskey-client")
+            
+            @property
+            def full_authkey(self):
+                key = self.authkey
+                
+                if self.authkey_is_oauth:
+                    key += "?preauthorized=true&ephemeral=true"
+                
+                return key
+            
             @model_validator(mode="after")
             def validate_auth_info(self):
-                if self.tailnet_lock and not self.authkey:
-                    error("You must provide an auth key when using tailnet lock.")
-                if not (self.authkey or self.oauth_secret):
-                    error("You must provide either an OAuth secret or an auth key.")
+                if self.tailnet_lock and self.authkey_is_oauth:
+                    error("You must provide an standard auth key when using tailnet lock.")
                 
                 return self
             
             @model_validator(mode="after")
             def validate_tags(self):
-                if (self.oauth_secret and not self.tailnet_lock) and not self.tags:
+                if self.authkey_is_oauth and not self.tags:
                     error("You must provide at least one tag when using an OAuth secret.")
                 
                 return self
@@ -108,33 +113,25 @@ runs:
         
         settings = TailscaleSettings()
         
-        tailscaled_args = settings.tailscaled_args
+        tailscaled_args = settings.tailscaled_extra_args
         
         if settings.tailnet_lock:
-            tailscaled_args = f"-statedir {TemporaryDirectory().name} " + tailscaled_args
+            tailscaled_args = f"-statedir {TemporaryDirectory().name} {tailscaled_args}"
         
         print(f"TAILSCALED_ARGS={tailscaled_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
         
-        if settings.oauth_secret:
-            authkey = f"{settings.oauth_secret}?preauthorized=true&ephemeral=true"
-        else:
-            authkey = settings.authkey
-        
-        tailscale_up_args = f"--auth-key '{authkey}' --hostname {settings.hostname} --accept-routes {settings.up_args}"
+        tailscale_args = f"--auth-key '{settings.full_authkey}' --hostname {settings.hostname} --accept-routes {settings.extra_args}"
         
         if settings.tags:
-            tailscale_up_args = f"--advertise-tags {settings.tags} " + tailscale_up_args
+            tailscale_up_args = f"--advertise-tags {settings.tags} {tailscale_args}" 
         
-        print(f"TAILSCALE_UP_ARGS={tailscale_up_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
-        
-        tailscale_exe = "'C:/Program Files/Tailscale/tailscale.exe'" if sys.platform == "win32" else "tailscale"
-        print(f"TAILSCALE_EXE={tailscale_exe}", file=open(os.getenv("GITHUB_ENV"), "a"))
+        print(f"TAILSCALE_UP_ARGS={tailscale_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
+
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
-        TS_OAUTH_SECRET: ${{ inputs.oauth-secret }}
         TS_TAGS: ${{ inputs.tags }}
-        TS_UP_ARGS: ${{ inputs.args }}
-        TS_TAILSCALED_ARGS: ${{ inputs.tailscaled-args }}
+        TS_EXTRA_ARGS: ${{ inputs.extra-args }}
+        TS_TAILSCALED_EXTRA_ARGS: ${{ inputs.tailscaled-extra-args }}
         TS_HOSTNAME: ${{ inputs.hostname }}
         TS_TAILNET_LOCK: ${{ inputs.tailnet-lock }}
 

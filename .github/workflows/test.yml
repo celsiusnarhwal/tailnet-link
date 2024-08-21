@@ -1,9 +1,6 @@
 on:
   workflow_dispatch:
     inputs:
-      oauth-secret:
-        description: "oauth secret"
-        required: false
       authkey:
         description: "authkey"
         required: false
@@ -19,6 +16,5 @@ jobs:
       - name: Connect to Tailscale
         uses: celsiusnarhwal/tailnet-link@main
         with:
-          oauth-secret: ${{ inputs.oauth-secret }}
           authkey: ${{ inputs.authkey }}
           tags: tag:github-actions
