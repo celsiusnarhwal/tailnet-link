@@ -152,7 +152,9 @@ runs:
     - name: Install Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
       shell: ${{ env.SHELL }}
-      run: choco install tailscale -y
+      run: |
+        choco install tailscale -y
+        [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Program Files\Tailscale", "Machine")
 
     - name: Run tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
@@ -171,8 +173,8 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: .\tailscale.exe up ${{ env.TAILSCALE_UP_ARGS }}
-        post: .\tailscale.exe down
+        run: tailscale up ${{ env.TAILSCALE_UP_ARGS }}
+        post: tailscale down
         shell: ${{ env.SHELL }}
-        working-directory: 'C:/Program Files/Tailscale'
+#        working-directory: 'C:/Program Files/Tailscale'
 
