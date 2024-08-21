@@ -110,6 +110,7 @@ runs:
         
         
         settings = TailscaleSettings()
+        print(settings.tags)
         
         tailscaled_args = settings.tailscaled_extra_args
         
