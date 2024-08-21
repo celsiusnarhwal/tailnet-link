@@ -16,8 +16,9 @@ inputs:
       You must specify at least one tag.
     required: false
   version:
-    description: The version of Tailscale to use. The latest version will be installed if this is not specified.
-    required: false
+    description: The version of Tailscale to use.
+    required: true
+    default: latest
   args:
     description: Optional additional arguments to `tailscale up`.
     required: false
@@ -79,7 +80,6 @@ runs:
             authkey: str
             oauth_secret: str
             tags: str
-            version: str
             up_args: str
             tailscaled_args: str
             hostname: str
@@ -131,7 +131,6 @@ runs:
         TS_AUTHKEY: ${{ inputs.authkey }}
         TS_OAUTH_SECRET: ${{ inputs.oauth-secret }}
         TS_TAGS: ${{ inputs.tags }}
-        TS_VERSION: ${{ inputs.version }}
         TS_UP_ARGS: ${{ inputs.args }}
         TS_TAILSCALED_ARGS: ${{ inputs.tailscaled-args }}
         TS_HOSTNAME: ${{ inputs.hostname }}
@@ -144,7 +143,7 @@ runs:
 
     - name: Install Tailscale
       shell: ${{ env.SHELL }}
-      run: go install tailscale.com/cmd/tailscale{,d}
+      run: go install tailscale.com/cmd/tailscale{,d}@latest
 
 
 #    - name: Install Tailscale (Linux)
