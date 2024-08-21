@@ -106,7 +106,7 @@ runs:
         tailscaled_args = settings.tailscaled_args
         
         if settings.tailnet_lock:
-            tailscaled_args += f" -statedir {TemporaryDirectory().name}"
+            tailscaled_args += f"-statedir {TemporaryDirectory().name}"
         
         print(f"TAILSCALED_ARGS={tailscaled_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
         
