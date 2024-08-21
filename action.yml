@@ -157,8 +157,8 @@ runs:
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: sudo ${{ env.TAILSCALE_EXE }} up ${{ env.TAILSCALE_UP_ARGS }}
-        post: sudo ${{ env.TAILSCALE_EXE }} down
+        run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
+        post: sudo tailscale down
         shell: ${{ env.SHELL }}
 
     - name: Connect to Tailscale (Windows)
