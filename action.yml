@@ -61,6 +61,7 @@ runs:
     - name: Handle Inputs
       shell: python
       run: |
+        import sys
         import os
         import socket
         from tempfile import TemporaryDirectory
@@ -124,9 +125,11 @@ runs:
         
         if settings.tags:
             tailscale_up_args = f"--advertise-tags '{settings.tags}' " + tailscale_up_args
-            
         
         print(f"TAILSCALE_UP_ARGS={tailscale_up_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
+        
+        tailscale_exe = "C:/Program Files/Tailscale/tailscale.exe" if sys.platform == "win32" else "tailscale"
+        print(f"TAILSACLE_EXE={tailscale_exe}", file=open(os.getenv("GITHUB_ENV"), "a"))
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
         TS_OAUTH_SECRET: ${{ inputs.oauth-secret }}
@@ -160,16 +163,15 @@ runs:
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
-        post: sudo tailscale down
+        run: sudo ${{ env.TAILSCALE_EXE }} up ${{ env.TAILSCALE_UP_ARGS }}
+        post: sudo ${{ env.TAILSCALE_EXE }} down
         shell: ${{ env.SHELL }}
 
     - name: Connect to Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: tailscale up
-        post: tailscale down
+        run: ${{ env.TAILSCALE_EXE }} up
+        post: ${{ env.TAILSCALE_EXE }} down
         shell: ${{ env.SHELL }}
-        working-directory: C:/Program Files/Tailscale
 
