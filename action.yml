@@ -89,10 +89,10 @@ runs:
                 
                 return self
             
-            @field_validator("tags")
+            @model_validator(mode="after")
             def validate_tags(cls, v):
                 if not v:
-                    error("You must provide at least one tag.")
+                    error("You must provide at least one tag when using an OAuth secret.")
                 
                 return ",".join([tag.split(":")[-1] for tag in v.split(",")])
             
@@ -115,7 +115,7 @@ runs:
         else:
             authkey = settings.authkey
         
-        tailscale_up_args = f"--auth-key={authkey} --advertise-tags={settings.tags} --hostname={settings.hostname} --accept-routes {settings.up_args}"
+        tailscale_up_args = f"--advertise-tags={settings.tags} --auth-key={authkey} --hostname={settings.hostname} --accept-routes {settings.up_args}"
         
         print(f"TAILSCALE_UP_ARGS={tailscale_up_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
       env:
