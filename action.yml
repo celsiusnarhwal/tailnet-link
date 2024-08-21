@@ -118,7 +118,7 @@ runs:
         
         print(f"TAILSCALED_ARGS={tailscaled_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
         
-        tailscale_args = f"--auth-key '{settings.full_authkey}' --hostname {settings.hostname} --accept-routes {settings.extra_args}"
+        tailscale_args = f"--auth-key '{settings.full_authkey}' --hostname {settings.hostname} {settings.extra_args}"
         
         if settings.tags:
             tailscale_args = f"--advertise-tags {settings.tags} {tailscale_args}" 
