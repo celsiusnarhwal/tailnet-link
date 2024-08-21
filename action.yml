@@ -171,7 +171,7 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: ${{ env.TAILSCALE_EXE }} up
+        run: ${{ env.TAILSCALE_EXE }}
         post: ${{ env.TAILSCALE_EXE }} down
         shell: ${{ env.SHELL }}
 
