@@ -153,6 +153,7 @@ runs:
       run: choco install tailscale -y
 
     - name: Run tailscaled (macOS and Linux)
+      if: ${{ runner.os != 'Windows' }}
       shell: ${{ env.SHELL }}
       run: ${{ env.SUDO }} tailscaled ${{ env.TAILSCALED_ARGS }} &
 
