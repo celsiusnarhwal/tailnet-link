@@ -52,6 +52,7 @@ runs:
       run: |
         import os
         import socket
+        import typing as t
         from tempfile import TemporaryDirectory
         
         from pydantic import field_validator, model_validator
@@ -118,7 +119,7 @@ runs:
         TS_OAUTH_SECRET: ${{ inputs.oauth-secret }}
         TS_TAGS: ${{ inputs.tags }}
         TS_VERSION: ${{ inputs.version }}
-        TS_ARGS: ${{ inputs.args }}
+        TS_UP_ARGS: ${{ inputs.args }}
         TS_TAILSCALED_ARGS: ${{ inputs.tailscaled-args }}
         TS_HOSTNAME: ${{ inputs.hostname }}
         TS_TAILNET_LOCK: ${{ inputs.tailnet-lock }}
