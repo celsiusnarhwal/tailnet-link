@@ -94,7 +94,7 @@ runs:
                 if not v:
                     error("You must provide at least one tag.")
                 
-                return ",".join([tag.split(":")[-1] for tag in v])
+                return ",".join([tag.split(":")[-1] for tag in v.split(",")])
             
             @field_validator("hostname")
             def validate_hostname(cls, v):
