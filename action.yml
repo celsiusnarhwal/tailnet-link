@@ -115,7 +115,7 @@ runs:
         print(f"TAILSCALE_UP_ARGS={tailscale_up_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
-        TS_OAUTH_SECRET: ${{ inputs.oauth_secret }}
+        TS_OAUTH_SECRET: ${{ inputs.oauth-secret }}
         TS_TAGS: ${{ inputs.tags }}
         TS_VERSION: ${{ inputs.version }}
         TS_ARGS: ${{ inputs.args }}
