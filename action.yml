@@ -160,5 +160,6 @@ runs:
     - name: Connect to Tailscale
       uses: gacts/run-and-post-run@v1
       with:
-        run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
+        run: ${{ env.SUDO }} tailscale up ${{ env.TAILSCALE_UP_ARGS }}
         post: ${{ env.SUDO }} tailscale down
+        shell: ${{ env.SHELL }}
