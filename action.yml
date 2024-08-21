@@ -51,7 +51,7 @@ runs:
         sudo = "sudo" if sys.platform != "windows" else ""
         
         print(f"SHELL={shell}", file=open(os.getenv("GITHUB_ENV"), "a"))
-        print(f"SUDO=${sudo}", file=open(os.getenv("GITHUB_ENV"), "a"))
+        print(f"SUDO={sudo}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
     - name: Install Dependencies
       shell: ${{ env.SHELL }}
