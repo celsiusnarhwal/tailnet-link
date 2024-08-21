@@ -1,6 +1,7 @@
 # Tailnet Link
 
-Tailnet Link connects your GitHub workflows to your [Tailscale](https://tailscale.com) network.
+Tailnet Link connects a GitHub workflow to your [Tailscale](https://tailscale.com) network and disconnects it after the
+workflow ends.
 
 Unlike Tailscale's Linux-only [official action](https://github.com/tailscale/github-action), Tailnet Link also supports
 macOS and Windows runners.
@@ -19,7 +20,7 @@ macOS and Windows runners.
 | `tailnet-lock`          | Set this to true if you're using [tailnet lock](https://tailscale.com/kb/1226/tailnet-lock).                                                                                                                               | No                                                                 | `false`     |
 
 >[!WARNING]
-> If you're using [tailnet lock](https://tailscale.com/kb/1226/tailnet-lock), `authkey` must be a [pre-signed](https://tailscale.com/kb/1226/tailnet-lock?q=pre+signed#add-a-node-using-a-pre-signed-auth-key). It cannot be an OAuth client secret.
+> If you're using [tailnet lock](https://tailscale.com/kb/1226/tailnet-lock), `authkey` must be a [pre-signed](https://tailscale.com/kb/1226/tailnet-lock?q=pre+signed#add-a-node-using-a-pre-signed-auth-key) auth key It cannot be an OAuth client secret.
 
 ### Example
 
