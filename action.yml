@@ -115,7 +115,7 @@ runs:
         else:
             authkey = settings.authkey
         
-        tailscale_up_args = f"--auth-key {authkey} --advertise-tags {settings.tags} --hostname {settings.hostname} --accept-routes {settings.up_args}"
+        tailscale_up_args = f"--auth-key={authkey} --advertise-tags={settings.tags} --hostname={settings.hostname} --accept-routes {settings.up_args}"
         
         print(f"TAILSCALE_UP_ARGS={tailscale_up_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
       env:
@@ -144,7 +144,7 @@ runs:
       run: choco install tailscale -y
 
     - name: Run tailscaled (macOS and Linux)
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
 
     - name: Connect to Tailscale
