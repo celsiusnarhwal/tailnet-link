@@ -124,7 +124,6 @@ runs:
             tailscale_up_args = f"--advertise-tags {settings.tags} {tailscale_args}" 
         
         print(f"TAILSCALE_UP_ARGS={tailscale_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
-
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
         TS_TAGS: ${{ inputs.tags }}
