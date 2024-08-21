@@ -106,7 +106,7 @@ runs:
         tailscaled_args = settings.tailscaled_args
         
         if settings.tailnet_lock:
-            tailscaled_args += f"-statedir {TemporaryDirectory().name}"
+            tailscaled_args = f"-statedir {TemporaryDirectory().name} " + tailscaled_args
         
         print(f"TAILSCALED_ARGS={tailscaled_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
         
@@ -115,7 +115,11 @@ runs:
         else:
             authkey = settings.authkey
         
-        tailscale_up_args = f"--advertise-tags={settings.tags} --auth-key={authkey} --hostname={settings.hostname} --accept-routes {settings.up_args}"
+        tailscale_up_args = f"--auth-key {authkey} --hostname {settings.hostname} --accept-routes {settings.up_args}"
+        
+        if settings.tags:
+            tailscale_up_args = f"--advertise-tags {settings.tags} " + tailscale_up_args
+            
         
         print(f"TAILSCALE_UP_ARGS={tailscale_up_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
       env:
