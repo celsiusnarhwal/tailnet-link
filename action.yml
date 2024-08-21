@@ -39,12 +39,17 @@ runs:
     - name: Set Up Python
       uses: actions/setup-python@v5
 
-    - name: Install Pydantic Settings (Unix)
-      shell: bash
-      run: pip install pydantic-settings
+    - name: Determine Shell
+      shell: python
+      run: |
+        import os
+        import sys
+        
+        shell = "powershell" if sys.platform == "windows" else "bash"
+        print(f"SHELL={shell}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
-    - name: Install Pydantic Settings (Windows)
-      shell: powershell
+    - name: Install Pydantic Settings
+      shell: ${{ env.SHELL }}
       run: pip install pydantic-settings
 
     - name: Handle Inputs
@@ -52,7 +57,6 @@ runs:
       run: |
         import os
         import socket
-        import typing as t
         from tempfile import TemporaryDirectory
         
         from pydantic import field_validator, model_validator
@@ -90,7 +94,7 @@ runs:
                 if not v:
                     error("You must provide at least one tag.")
                 
-                return v
+                return ",".join([tag.split(":")[-1] for tag in v])
             
             @field_validator("hostname")
             def validate_hostname(cls, v):
@@ -124,22 +128,17 @@ runs:
         TS_HOSTNAME: ${{ inputs.hostname }}
         TS_TAILNET_LOCK: ${{ inputs.tailnet-lock }}
 
-    - name: Install Tailscale (Linux)
-      if: ${{ runner.os != 'Linux' }}
-      shell: bash
+    - name: Install Tailscale (Unix)
+      if: ${{ runner.os == 'Linux' || runner.os == 'macOS' }}
+      shell: ${{ env.SHELL }}
       run: curl -fsSL https://tailscale.com/install.sh | sh
 
-    - name: Instal Tailscale (macOS)
-      if: ${{ runner.os != 'macOS' }}
-      shell: bash
-      run: brew install tailscale
-
     - name: Install Tailscale (Windows)
-      if: ${{ runner.os != 'Windows' }}
-      shell: powershell
+      if: ${{ runner.os == 'Windows' }}
+      shell: ${{ env.SHELL }}
       run: choco install tailscale -y
 
-    - name: Run tailscaled (macOS and Linux)
+    - name: Run tailscaled (Unix)
       shell: bash
       run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
 
