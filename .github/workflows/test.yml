@@ -1,0 +1,24 @@
+on:
+  workflow_dispatch:
+    inputs:
+      oauth-secret:
+        description: "oauth secret"
+        required: false
+      authkey:
+        description: "authkey"
+        required: false
+
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", "macos-latest, "windows-latest"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Connect to Tailscale
+        uses: celsiusnarhwal/tailnet-link@main
+        with:
+          oauth-secret: ${{ inputs.oauth-secret }}
+          authkey: ${{ inputs.authkey }}
+          tags: github-actions
