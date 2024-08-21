@@ -115,7 +115,7 @@ runs:
         else:
             authkey = settings.authkey
         
-        tailscale_up_args = f"--auth-key '{authkey}' --hostname '{settings.hostname}' --accept-routes {settings.up_args}"
+        tailscale_up_args = f"--auth-key '{authkey}' --hostname '{settings.hostname}' --accept-routes {settings.up_args} --operator=$(whoami)"
         
         if settings.tags:
             tailscale_up_args = f"--advertise-tags '{settings.tags}' " + tailscale_up_args
