@@ -147,9 +147,7 @@ runs:
     - name: Install Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
       shell: ${{ env.SHELL }}
-      run: |
-        choco install tailscale -y
-        [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Program Files\Tailscale", "Machine")
+      run: choco install tailscale -y
 
     - name: Run tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
