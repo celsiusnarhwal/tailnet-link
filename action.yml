@@ -48,7 +48,10 @@ runs:
         import sys
         
         shell = "powershell" if sys.platform == "windows" else "bash"
+        sudo = "sudo" if sys.platform != "windows" else ""
+        
         print(f"SHELL={shell}", file=open(os.getenv("GITHUB_ENV"), "a"))
+        print(f"SUDO=${sudo}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
     - name: Install Dependencies
       shell: ${{ env.SHELL }}
@@ -151,10 +154,10 @@ runs:
 
     - name: Run tailscaled (macOS and Linux)
       shell: ${{ env.SHELL }}
-      run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
+      run: ${{ env.SUDO }} tailscaled ${{ env.TAILSCALED_ARGS }} &
 
     - name: Connect to Tailscale
       uses: gacts/run-and-post-run@v1
       with:
-        run: tailscale up ${{ env.TAILSCALE_UP_ARGS }}
-        post: tailscale down
+        run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
+        post: ${{ env.SUDO }} tailscale down
