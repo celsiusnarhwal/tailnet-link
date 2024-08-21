@@ -9,17 +9,16 @@ inputs:
     required: true
   tags:
     description: |
-      A comma-separated list of tags to apply to nodes authenticated with this action.
-      You must specify at least one tag.
+      A comma-separated list of tags to apply to nodes authenticated by this action.
     required: false
   version:
     description: The version of Tailscale to use.
     required: true
     default: latest
-  args:
+  extra-args:
     description: Optional additional arguments to `tailscale up`.
     required: false
-  tailscaled-args:
+  tailscaled-extra-args:
     description: 'Optional additional arguments to `tailscaled`'
     required: false
   hostname:
