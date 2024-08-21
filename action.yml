@@ -154,7 +154,7 @@ runs:
       shell: ${{ env.SHELL }}
       run: choco install tailscale -y
       env:
-        ChocolatelyToolsLocation: D:/tools
+        ChocolateyToolsLocation: D:/tools
 
     - name: Run tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
