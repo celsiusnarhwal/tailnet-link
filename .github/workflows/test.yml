@@ -21,4 +21,4 @@ jobs:
         with:
           oauth-secret: ${{ inputs.oauth-secret }}
           authkey: ${{ inputs.authkey }}
-          tags: github-actions
+          tags: tag:github-actions

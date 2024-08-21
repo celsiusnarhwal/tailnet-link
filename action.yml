@@ -94,7 +94,7 @@ runs:
                 if (self.oauth_secret and not self.tailnet_lock) and not self.tags:
                     error("You must provide at least one tag when using an OAuth secret.")
                 
-                return ",".join([tag.split(":")[-1] for tag in self.tags.split(",")])
+                return self
             
             @field_validator("hostname")
             def validate_hostname(cls, v):
