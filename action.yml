@@ -172,7 +172,7 @@ runs:
       uses: gacts/run-and-post-run@v1
       with:
         run: .\tailscale.exe up ${{ env.TAILSCALE_UP_ARGS }}
-        post: tailscale down
+        post: .\tailscale.exe down
         shell: ${{ env.SHELL }}
         working-directory: 'C:/Program Files/Tailscale'
 
