@@ -14,7 +14,7 @@ inputs:
     description: |
       A comma-separated list of tags to apply to nodes authenticated with this action.
       You must specify at least one tag.
-    required: true
+    required: false
   version:
     description: The version of Tailscale to use. The latest version will be installed if this is not specified.
     required: false
@@ -48,7 +48,7 @@ runs:
         shell = "powershell" if sys.platform == "windows" else "bash"
         print(f"SHELL={shell}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
-    - name: Install Pydantic Settings
+    - name: Install Dependencies
       shell: ${{ env.SHELL }}
       run: pip install pydantic-settings
 
