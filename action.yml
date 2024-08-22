@@ -157,7 +157,9 @@ runs:
       uses: gacts/run-and-post-run@v1
       with:
         run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
-        post: sudo tailscale down
+        post: |
+          sudo tailscale down
+          sudo tailscale logout || ;
         shell: ${{ env.SHELL }}
 
     - name: Connect to Tailscale (Windows)
@@ -165,7 +167,9 @@ runs:
       uses: gacts/run-and-post-run@v1
       with:
         run: ./tailscale.exe up ${{ env.TAILSCALE_UP_ARGS }}
-        post: ./tailscale.exe down
+        post: |
+          ./tailscale.exe down
+          ./tailscale.exe logout
         shell: ${{ env.SHELL }}
         working-directory: 'C:/Program Files/Tailscale'
 
