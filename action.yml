@@ -52,8 +52,7 @@ runs:
       with:
         run: |
           pipx install pew
-          pew new tailnet-link
-          pew in tailnet-link pip install pydantic-settings
+          pew new tailnet-link -d -i pydantic-settings
           pew in tailnet-link python ${{ github.action_path }}/inputs.py
         post: pew rm tailnet-link
         shell: ${{ env.SHELL }}
