@@ -35,13 +35,6 @@ class TailscaleSettings(BaseSettings):
         return key
 
     @model_validator(mode="after")
-    def validate_auth_info(self):
-        if self.tailnet_lock and self.authkey_is_oauth:
-            error("You must provide an standard auth key when using tailnet lock.")
-
-        return self
-
-    @model_validator(mode="after")
     def validate_tags(self):
         if self.authkey_is_oauth and not self.tags:
             error("You must provide at least one tag when using an OAuth secret.")
