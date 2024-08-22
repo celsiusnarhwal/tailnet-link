@@ -19,7 +19,6 @@ class TailscaleSettings(BaseSettings):
     extra_args: str
     tailscaled_extra_args: str
     hostname: str
-    tailnet_lock: bool
 
     @property
     def authkey_is_oauth(self):
