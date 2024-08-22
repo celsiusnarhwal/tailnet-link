@@ -20,12 +20,12 @@ jobs:
           tags: tag:github-actions
           extra-args: --accept-routes --accept-dns
 
-      - name: Connect to Tailscale (macOS and Linux)
+      - name: Test Connection (macOS and Linux)
         if: ${{ runner.os != 'Windows' }}
         shell: bash
         run: sudo tailscale ip
 
-      - name: Connect to Tailscale (Windows)
+      - name: Test Connection (Windows)
         if: ${{ runner.os == 'Windows' }}
         shell: powershell
         run: ./tailscale.exe ip
