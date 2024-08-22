@@ -148,7 +148,7 @@ runs:
     - name: Start tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
       shell: ${{ env.SHELL }}
-      run: sudo tailcaled ${{ env.TAILCALED_ARGS }} &
+      run: sudo tailscaled ${{ env.TAILCALED_ARGS }} &
 
     - name: Connect to Tailscale (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
@@ -162,7 +162,7 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: ./tailsacle.exe up ${{ env.TAILSCALE_ARGS }}
+        run: ./tailscale.exe up ${{ env.TAILSCALE_ARGS }}
         post: ./tailscale.exe logout
         shell: ${{ env.SHELL }}
         working-directory: 'C:/Program Files/Tailscale'
