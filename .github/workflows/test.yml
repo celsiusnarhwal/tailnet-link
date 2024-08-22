@@ -22,11 +22,11 @@ jobs:
 
       - name: Connect to Tailscale (macOS and Linux)
         if: ${{ runner.os != 'Windows' }}
-        shell: ${{ env.SHELL }}
+        shell: bash
         run: sudo tailscale ip
 
       - name: Connect to Tailscale (Windows)
         if: ${{ runner.os == 'Windows' }}
-        shell: ${{ env.SHELL }}
+        shell: powershell
         run: ./tailscale.exe ip
         working-directory: 'C:/Program Files/Tailscale'
