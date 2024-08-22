@@ -49,10 +49,12 @@ runs:
 
     - name: Install Dependencies
       shell: ${{ env.SHELL }}
-      run: pip install pydantic-settings
+      run: |
+        python -m venv tailnet-link
+        ./tailnet-link/bin/python -m pip install pydantic-settings
 
     - name: Handle Inputs
-      shell: python
+      shell: ./tailnet-link/bin/python {0}
       run: |
         import os
         import socket
