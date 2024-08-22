@@ -1,0 +1,2 @@
+inflect==7.3.1
+pydantic-settings==2.4.0
