@@ -159,7 +159,7 @@ runs:
         run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
         post: |
           sudo tailscale down
-          sudo tailscale logout || :
+          sudo tailscale logout
         shell: ${{ env.SHELL }}
 
     - name: Connect to Tailscale (Windows)
