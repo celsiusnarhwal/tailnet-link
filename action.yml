@@ -139,6 +139,11 @@ runs:
       shell: ${{ env.SHELL }}
       run: brew install tailscale
 
+    - name: Install Tailscale (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      shell: ${{ env.SHELL }}
+      run: choco install tailscale -y
+
     - name: Connect to Tailscale (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
@@ -149,14 +154,12 @@ runs:
         post: sudo tailscale logout
         shell: ${{ env.SHELL }}
 
-    - name: Install and Connect to Tailscale (Windows)
+    - name: Connect to Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: |
-          choco install tailscale -y
-          ./tailsacle.exe up ${{ env.TAILSCALE_ARGS }}
-        post: ./tailscale.exe down
+        run: ./tailsacle.exe up ${{ env.TAILSCALE_ARGS }}
+        post: ./tailscale.exe logout
         shell: ${{ env.SHELL }}
         working-directory: 'C:/Program Files/Tailscale'
 
