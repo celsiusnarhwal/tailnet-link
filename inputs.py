@@ -1,11 +1,16 @@
 import os
 import socket
+import typing as t
 
 import inflect as ifl
 from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 inflect = ifl.engine()
+
+
+def set_environment_variable(name: str, value: t.Any):
+    print(f"{name}={value}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
 
 def error(message: str):
@@ -44,8 +49,14 @@ class TailscaleSettings(BaseSettings):
 
     @field_validator("extra_args")
     def validate_extra_args(cls, v):
-        if forbidden_flags := {"--auth-key", "--advertise-tags", "--hostname"}.intersection(v):
-            error(f"extra-args may not contain {inflect.join(forbidden_flags, conj='or')}.")
+        if forbidden_flags := {
+            "--auth-key",
+            "--advertise-tags",
+            "--hostname",
+        }.intersection(v):
+            error(
+                f"extra-args may not contain {inflect.join(forbidden_flags, conj='or')}."
+            )
 
         return v
 
@@ -58,11 +69,11 @@ settings = TailscaleSettings()
 
 tailscaled_args = settings.tailscaled_extra_args
 
-print(f"TAILSCALED_ARGS={tailscaled_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
+set_environment_variable("TAILSCALED_ARGS", tailscaled_args)
 
 tailscale_args = f"--auth-key '{settings.full_authkey}' --hostname {settings.hostname} {settings.extra_args}"
 
 if settings.tags:
     tailscale_args = f"--advertise-tags {settings.tags} {tailscale_args}"
 
-print(f"TAILSCALE_ARGS={tailscale_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
+set_environment_variable("TAILSCALE_ARGS", tailscale_args)
