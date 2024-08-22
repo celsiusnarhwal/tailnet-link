@@ -18,7 +18,7 @@ jobs:
         with:
           authkey: ${{ inputs.authkey }}
           tags: tag:github-actions
-          extra-args: --accept-routes --accept-dns --hostname testhostname
+          extra-args: --accept-routes --accept-dns --hostname testhostname --advertise-tags tag:test --auth-key 1234
 
       - name: Test Connection (macOS and Linux)
         if: ${{ runner.os != 'Windows' }}
