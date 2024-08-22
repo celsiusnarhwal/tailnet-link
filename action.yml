@@ -113,8 +113,8 @@ runs:
         
         tailscaled_args = settings.tailscaled_extra_args
         
-        if settings.tailnet_lock:
-            tailscaled_args = f"-statedir {TemporaryDirectory().name} {tailscaled_args}"
+#        if settings.tailnet_lock:
+#            tailscaled_args = f"-statedir {TemporaryDirectory().name} {tailscaled_args}"
         
         print(f"TAILSCALED_ARGS={tailscaled_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
         
@@ -123,7 +123,7 @@ runs:
         if settings.tags:
             tailscale_args = f"--advertise-tags {settings.tags} {tailscale_args}" 
         
-        print(f"TAILSCALE_UP_ARGS={tailscale_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
+        print(f"TAILSCALE_ARGS={tailscale_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
         TS_TAGS: ${{ inputs.tags }}
@@ -141,30 +141,34 @@ runs:
       if: ${{ runner.os == 'macOS' }}
       shell: ${{ env.SHELL }}
       run: brew install tailscale
-
-    - name: Install Tailscale (Windows)
-      if: ${{ runner.os == 'Windows' }}
-      shell: ${{ env.SHELL }}
-      run: choco install tailscale -y
-
-    - name: Run tailscaled (macOS and Linux)
-      if: ${{ runner.os != 'Windows' }}
-      shell: ${{ env.SHELL }}
-      run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
-
+#
+#    - name: Install Tailscale (Windows)
+#      if: ${{ runner.os == 'Windows' }}
+#      shell: ${{ env.SHELL }}
+#      run: choco install tailscale -y
+#
+#    - name: Run tailscaled (macOS and Linux)
+#      if: ${{ runner.os != 'Windows' }}
+#      shell: ${{ env.SHELL }}
+#      run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
+#
     - name: Connect to Tailscale (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: sudo tailscale up ${{ env.TAILSCALE_UP_ARGS }}
-        post: sudo tailscale down
+        run: |
+          sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
+          sudo tailscale up ${{ env.TAILSCALE_ARGS }}
+        post: sudo tailscale logout
         shell: ${{ env.SHELL }}
 
-    - name: Connect to Tailscale (Windows)
+    - name: Install and Connect to Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: ./tailscale.exe up ${{ env.TAILSCALE_UP_ARGS }}
+        run: |
+          choco install tailscale -y
+          ./tailsacle.exe up ${{ env.TAILSCALE_ARGS }}
         post: ./tailscale.exe down
         shell: ${{ env.SHELL }}
         working-directory: 'C:/Program Files/Tailscale'
