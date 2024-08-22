@@ -144,13 +144,17 @@ runs:
       shell: ${{ env.SHELL }}
       run: choco install tailscale -y
 
+
+    - name: Start tailscaled (macOS and Linux)
+      if: ${{ runner.os != 'Windows' }}
+      shell: ${{ env.SHELL }}
+      run: sudo tailcaled ${{ env.TAILCALED_ARGS }} &
+
     - name: Connect to Tailscale (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: |
-          sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
-          sudo tailscale up ${{ env.TAILSCALE_ARGS }}
+        run: sudo tailscale up ${{ env.TAILSCALE_ARGS }}
         post: sudo tailscale logout
         shell: ${{ env.SHELL }}
 
