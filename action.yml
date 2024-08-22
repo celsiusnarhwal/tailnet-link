@@ -144,7 +144,6 @@ runs:
       shell: ${{ env.SHELL }}
       run: choco install tailscale -y
 
-
     - name: Start tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
       shell: ${{ env.SHELL }}
