@@ -82,7 +82,7 @@ runs:
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run:  |sudo tailscale up ${{ env.TAILSCALE_ARGS }}
+        run:  sudo tailscale up ${{ env.TAILSCALE_ARGS }}
         post: sudo tailscale logout
         shell: ${{ env.SHELL }}
 
