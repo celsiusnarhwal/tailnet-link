@@ -113,9 +113,6 @@ runs:
         
         tailscaled_args = settings.tailscaled_extra_args
         
-#        if settings.tailnet_lock:
-#            tailscaled_args = f"-statedir {TemporaryDirectory().name} {tailscaled_args}"
-        
         print(f"TAILSCALED_ARGS={tailscaled_args}", file=open(os.getenv("GITHUB_ENV"), "a"))
         
         tailscale_args = f"--auth-key '{settings.full_authkey}' --hostname {settings.hostname} {settings.extra_args}"
