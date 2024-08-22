@@ -82,9 +82,7 @@ runs:
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: |
-          sudo tailscale up ${{ env.TAILSCALE_ARGS }}
-          echo "::notice:: Successfully connected to Tailscale ($(tailscale ip -4) / $(tailscale ip -6))"
+        run:  |sudo tailscale up ${{ env.TAILSCALE_ARGS }}
         post: sudo tailscale logout
         shell: ${{ env.SHELL }}
 
@@ -92,9 +90,7 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: |
-          ./tailscale.exe up ${{ env.TAILSCALE_ARGS }}
-          echo "::notice:: Successfully connected to Tailscale ($(tailscale ip -4) / $(tailscale ip -6))"
+        run: ./tailscale.exe up ${{ env.TAILSCALE_ARGS }}
         post: ./tailscale.exe logout
         shell: ${{ env.SHELL }}
         working-directory: 'C:/Program Files/Tailscale'
