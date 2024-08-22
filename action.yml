@@ -19,7 +19,7 @@ inputs:
     description: Optional additional arguments to `tailscale up`.
     required: false
   tailscaled-extra-args:
-    description: 'Optional additional arguments to `tailscaled`'
+    description: Optional additional arguments to `tailscaled`.
     required: false
   hostname:
     description: A fixed machine name.
