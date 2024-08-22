@@ -24,12 +24,7 @@ inputs:
   hostname:
     description: A fixed machine name.
     required: false
-  tailnet-lock:
-    description: |
-      Set this to `true` if, and only if, you're using tailnet lock. If you're unsure whether you need to set
-      this option, you probably don't.
-    required: true
-    default: "false"
+
 runs:
   using: composite
   steps:
