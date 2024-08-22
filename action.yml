@@ -50,9 +50,10 @@ runs:
     - name: Handle Inputs
       shell: ${{ env.SHELL }}
       run: |
-        python -m venv tailnet-link
-        ./tailnet-link/bin/python -m pip install pydantic-settings
-        ./tailnet-link/bin/python ${{ github.action_path }}/inputs.py
+        pipx install pew
+        pew new tailnet-link
+        pew in tailnet-link pip install pydantic-settings
+        pew in tailnet-link python ${{ github.action_path }}/inputs.py
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
         TS_TAGS: ${{ inputs.tags }}
