@@ -52,7 +52,7 @@ runs:
       run: |
         python -m venv tailnet-link
         ./tailnet-link/bin/python -m pip install pydantic-settings
-        ./tailnet-link/bin/python inputs.py
+        ./tailnet-link/bin/python ${{ github.action_path }}/inputs.py
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
         TS_TAGS: ${{ inputs.tags }}
