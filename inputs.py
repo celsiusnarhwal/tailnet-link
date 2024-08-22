@@ -49,14 +49,15 @@ class TailscaleSettings(BaseSettings):
 
     @field_validator("extra_args")
     def validate_extra_args(cls, v):
-        if forbidden_flags := {
-            "--auth-key",
-            "--advertise-tags",
-            "--hostname",
-        }.intersection(v):
-            error(
-                f"extra-args may not contain {inflect.join(forbidden_flags, conj='or')}."
-            )
+        forbidden_flags = ["--auth-key", "--advertise-tags", "--hostname"]
+        found = []
+
+        for flag in forbidden_flags:
+            if any((token.startswith(flag) for token in v.split(" "))):
+                found.append(flag)
+
+        if found:
+            error(f"extra-args may not contain {inflect.join(found, conj='or')}.")
 
         return v
 
