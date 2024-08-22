@@ -1,9 +1,11 @@
 import os
 import socket
-from tempfile import TemporaryDirectory
 
+import inflect as ifl
 from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+inflect = ifl.engine()
 
 
 def error(message: str):
@@ -39,6 +41,13 @@ class TailscaleSettings(BaseSettings):
             error("You must provide at least one tag when using an OAuth secret.")
 
         return self
+
+    @field_validator("extra_args")
+    def validate_extra_args(cls, v):
+        if forbidden_flags := {"--auth-key", "--advertise-tags", "--hostname"}.intersection(v):
+            error(f"extra-args may not contain {inflect.join(forbidden_flags, conj='or')}.")
+
+        return v
 
     @field_validator("hostname")
     def validate_hostname(cls, v):
