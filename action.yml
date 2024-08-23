@@ -41,7 +41,7 @@ runs:
         import sys
         import uuid
         
-        if sys.platform == "win32"
+        if sys.platform == "win32":
           tailscale = "./tailscale.exe"
           shell = "powershell"
         else:
