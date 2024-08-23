@@ -85,7 +85,12 @@ runs:
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: sudo tailscale up ${{ env.TAILSCALE_ARGS }}
+        run: | 
+          sudo tailscale up ${{ env.TAILSCALE_ARGS }}
+          
+          echo "Connected to $(tailscale status --json --peers=false | jq -r .CurrentTailnet.Name) \
+          as $(tailscale status --json --peers=false | jq -r .Self.HostName) \
+          ($(tailscale ip -4))"
         post: sudo tailscale logout
         shell: ${{ env.SHELL }}
 
@@ -93,7 +98,12 @@ runs:
       if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run: ./tailscale.exe up ${{ env.TAILSCALE_ARGS }}
+        run: |
+          ./tailscale.exe up ${{ env.TAILSCALE_ARGS }}
+          
+          echo "Connected to $(tailscale status --json --peers=false | jq -r .CurrentTailnet.Name) \
+          as $(tailscale status --json --peers=false | jq -r .Self.HostName) \
+          ($(tailscale ip -4))"
         post: ./tailscale.exe logout
         shell: ${{ env.SHELL }}
         working-directory: "C:/Program Files/Tailscale"
