@@ -15,7 +15,7 @@ jobs:
           images: |
             ${{ github.repository }}
           tags:
-            type=semver,version=v{{major}}
+            type=semver,pattern=v{{major}}
 
       - name: Apply Tag
         run: |
