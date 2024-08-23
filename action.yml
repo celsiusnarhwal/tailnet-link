@@ -86,18 +86,7 @@ runs:
       shell: ${{ env.SHELL }}
       run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
 
-#    - name: Connect to Tailscale (macOS and Linux)
-#      if: ${{ runner.os != 'Windows' }}
-#      uses: gacts/run-and-post-run@v1
-#      with:
-#        run: |
-#          ${{ env.TAILSCALE }} up ${{ env.TAILSCALE_ARGS }}
-#          echo "Connected to $(${{ env.TAILSCALE }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ env.TAILSCALE }} ip -4))"
-#        post: ${{ env.TAILSCALE }} logout
-#        shell: ${{ env.SHELL }}
-
     - name: Connect to Tailscale
-#      if: ${{ runner.os == 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
         run: |
