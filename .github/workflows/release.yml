@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Tag
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ github.repository }}
+          tags:
+            type=semver,version=v{{major}}
+
+      - name: Apply Tag
+        run: |
+          git tag -f ${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+          git push
