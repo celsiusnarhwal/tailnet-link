@@ -45,7 +45,7 @@ runs:
           tailscale = "./tailscale.exe"
           shell = "powershell"
         else:
-          tailscale = "tailscale"
+          tailscale = "sudo tailscale"
           shell = "bash"
 
         print(f"TAILSCALE={tailscale}\nSHELL={shell}\nVENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a"))
@@ -91,9 +91,9 @@ runs:
       uses: gacts/run-and-post-run@v1
       with:
         run: | 
-          sudo ${{ env.TAILSCALE }} up ${{ env.TAILSCALE_ARGS }}
+          ${{ env.TAILSCALE }} up ${{ env.TAILSCALE_ARGS }}
           echo "Connected to $(${{ env.TAILSCALE }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ env.TAILSCALE }} ip -4))"
-        post: sudo ${{ env.TAILSCALE }} logout
+        post: ${{ env.TAILSCALE }} logout
         shell: ${{ env.SHELL }}
 
     - name: Connect to Tailscale (Windows)
