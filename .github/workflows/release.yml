@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ${{ github.ref }}
 
       - name: Generate Tag
         uses: docker/metadata-action@v5
