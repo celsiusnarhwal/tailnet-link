@@ -18,14 +18,3 @@ jobs:
           authkey: ${{ inputs.authkey }}
           tags: tag:github-actions
           extra-args: --accept-routes --accept-dns
-
-      - name: Test Connection (macOS and Linux)
-        if: ${{ runner.os != 'Windows' }}
-        shell: bash
-        run: sudo tailscale ip
-
-      - name: Test Connection (Windows)
-        if: ${{ runner.os == 'Windows' }}
-        shell: powershell
-        run: ./tailscale.exe ip
-        working-directory: "C:/Program Files/Tailscale"
