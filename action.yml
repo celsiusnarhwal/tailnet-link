@@ -34,8 +34,8 @@ runs:
         python-version: 3.12
 
     - name: Setup
-      shell: python
-      run: import os, uuid; print(f"VENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a")
+      shell: bash
+      run: echo "VENV=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')" >> $GITHUB_ENV
 
     - name: Handle Inputs
       uses: gacts/run-and-post-run@v1
