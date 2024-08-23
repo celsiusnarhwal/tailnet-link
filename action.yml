@@ -40,10 +40,15 @@ runs:
         import os
         import sys
         import uuid
+        
+        if sys.platform == "win32"
+          tailscale = "./tailscale.exe"
+          shell = "powershell"
+        else:
+          tailscale = "tailscale"
+          shell = "bash
 
-        shell = "powershell" if sys.platform == "win32" else "bash"   
-
-        print(f"SHELL={shell}\nVENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a"))
+        print(f"TAILSCALE={tailscale}\nSHELL={shell}\nVENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
     - name: Handle Inputs
       uses: gacts/run-and-post-run@v1
@@ -86,9 +91,9 @@ runs:
       uses: gacts/run-and-post-run@v1
       with:
         run: | 
-          sudo tailscale up ${{ env.TAILSCALE_ARGS }}
-          echo "Connected to $(tailscale status --json --peers=false | jq -r .CurrentTailnet.Name) as $(tailscale status --json --peers=false | jq -r .Self.HostName) ($(tailscale ip -4))"
-        post: sudo tailscale logout
+          sudo ${{ env.TAILSCALE }} up ${{ env.TAILSCALE_ARGS }}
+          echo "Connected to $(${{ env.TAILSCALE }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ env.TAILSCALE }} ip -4))"
+        post: sudo ${{ env.TAILSCALE }} logout
         shell: ${{ env.SHELL }}
 
     - name: Connect to Tailscale (Windows)
@@ -97,7 +102,7 @@ runs:
       with:
         run: |
           ./tailscale.exe up ${{ env.TAILSCALE_ARGS }}
-          echo "Connected to $(./tailscale.exe status --json --peers=false | jq -r .CurrentTailnet.Name) as $(./tailscale.exe status --json --peers=false | jq -r .Self.HostName) ($(./tailscale.exe ip -4))"
-        post: ./tailscale.exe logout
+          echo "Connected to $(${{ env.TAILSCALE }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ env.TAILSCALE }} ip -4))"
+        post: ${{ env.TAILSCALE }} logout
         shell: ${{ env.SHELL }}
         working-directory: "C:/Program Files/Tailscale"
