@@ -11,18 +11,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
 
-      - name: Generate Tag
-        uses: docker/metadata-action@v5
-        with:
-          images: |
-            ${{ github.repository }}
-          tags:
-            type=semver,pattern=v{{major}}
-
-      - name: Apply Tag
-        run: |
-          git tag -f ${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
-          git push
+      - name: Tag Release
+        uses: celsiusnarhwal/meta-action@main
