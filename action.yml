@@ -46,7 +46,7 @@ runs:
           shell = "powershell"
         else:
           tailscale = "tailscale"
-          shell = "bash
+          shell = "bash"
 
         print(f"TAILSCALE={tailscale}\nSHELL={shell}\nVENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
