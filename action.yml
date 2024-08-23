@@ -5,7 +5,7 @@ branding:
   color: gray-dark
 inputs:
   authkey:
-    description: A Tailscale auth key or OAuth secret.
+    description: A Tailscale auth key or OAuth client secret.
     required: true
   tags:
     description: |
