@@ -1,5 +1,6 @@
 import os
 import socket
+import sys
 import typing as t
 
 import inflect as ifl
@@ -60,6 +61,11 @@ class TailscaleSettings(BaseSettings):
             error(f"extra-args may not contain {inflect.join(found, conj='or')}.")
 
         return v
+
+    @field_validator("tailscaled_extra_args")
+    def validate_tailscaled_extra_args(cls, v):
+        if sys.platform == "win32":
+            print("::warning::tailscaled-extra-args has no effect on Windows runners.")
 
     @field_validator("hostname")
     def validate_hostname(cls, v):
