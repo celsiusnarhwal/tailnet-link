@@ -67,6 +67,8 @@ class TailscaleSettings(BaseSettings):
         if sys.platform == "win32":
             print("::warning::tailscaled-extra-args has no effect on Windows runners.")
 
+        return v
+
     @field_validator("hostname")
     def validate_hostname(cls, v):
         return v or f"github-{socket.gethostname()}"
