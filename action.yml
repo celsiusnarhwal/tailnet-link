@@ -35,7 +35,7 @@ runs:
 
     - name: Setup
       shell: python
-      run: import os, uuid; print(f"VENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a")
+      run: import os, uuid; print(f"VENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
     - name: Handle Inputs
       uses: gacts/run-and-post-run@v1
