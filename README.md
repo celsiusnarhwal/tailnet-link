@@ -19,7 +19,7 @@ macOS and Windows runners.
 | `tailscaled-extra-args` | Additional arguments to [`tailscaled`](https://tailscale.com/kb/1278/tailscaled#flags-to-tailscaled).                                                                                                                      | No                                                                 | None        |
 
 >[!WARNING]
-> If you're using [tailnet lock](https://tailscale.com/kb/1226/tailnet-lock), `authkey` must be a [pre-signed](https://tailscale.com/kb/1226/tailnet-lock?q=pre+signed#add-a-node-using-a-pre-signed-auth-key) auth key It cannot be an OAuth client secret.
+> If you're using [tailnet lock](https://tailscale.com/kb/1226/tailnet-lock), `authkey` must be a [pre-signed](https://tailscale.com/kb/1226/tailnet-lock#add-a-node-using-a-pre-signed-auth-key) auth key (_not_ an OAuth client secret).
 
 ### Example
 
