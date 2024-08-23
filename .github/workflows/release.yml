@@ -12,7 +12,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          ${{ github.ref_name }}
+          ref: ${{ github.ref }}
 
       - name: Generate Tag
         uses: docker/metadata-action@v5
