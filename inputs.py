@@ -68,9 +68,7 @@ class TailscaleSettings(BaseSettings):
 
 settings = TailscaleSettings()
 
-tailscaled_args = settings.tailscaled_extra_args
-
-set_environment_variable("TAILSCALED_ARGS", tailscaled_args)
+set_environment_variable("TAILSCALED_ARGS", settings.tailscaled_extra_args)
 
 tailscale_args = f"--auth-key '{settings.full_authkey}' --hostname {settings.hostname} {settings.extra_args}"
 
