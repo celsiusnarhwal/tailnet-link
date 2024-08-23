@@ -5,7 +5,6 @@ on:
         description: "authkey"
         required: false
 
-
 jobs:
   test:
     strategy:
@@ -29,4 +28,4 @@ jobs:
         if: ${{ runner.os == 'Windows' }}
         shell: powershell
         run: ./tailscale.exe ip
-        working-directory: 'C:/Program Files/Tailscale'
+        working-directory: "C:/Program Files/Tailscale"

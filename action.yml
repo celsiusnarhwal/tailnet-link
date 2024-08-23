@@ -40,9 +40,9 @@ runs:
         import os
         import sys
         import uuid
-        
+
         shell = "powershell" if sys.platform == "win32" else "bash"   
-        
+
         print(f"SHELL={shell}\nVENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
     - name: Handle Inputs
@@ -85,7 +85,7 @@ runs:
       if: ${{ runner.os != 'Windows' }}
       uses: gacts/run-and-post-run@v1
       with:
-        run:  sudo tailscale up ${{ env.TAILSCALE_ARGS }}
+        run: sudo tailscale up ${{ env.TAILSCALE_ARGS }}
         post: sudo tailscale logout
         shell: ${{ env.SHELL }}
 
@@ -96,5 +96,4 @@ runs:
         run: ./tailscale.exe up ${{ env.TAILSCALE_ARGS }}
         post: ./tailscale.exe logout
         shell: ${{ env.SHELL }}
-        working-directory: 'C:/Program Files/Tailscale'
-
+        working-directory: "C:/Program Files/Tailscale"
