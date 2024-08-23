@@ -34,8 +34,16 @@ runs:
         python-version: 3.12
 
     - name: Setup
-      shell: bash
-      run: echo "VENV=$(uuidgen | tr '[:upper:]' '[:lower:]' | tr -d '-')" >> $GITHUB_ENV
+      id: setup
+      shell: python
+      run: |
+        import os
+        import sys
+        import uuid
+
+        shell = "powershell" if sys.platform == "win32" else "bash"   
+
+        print(f"SHELL={shell}\nVENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a"))
 
     - name: Handle Inputs
       uses: gacts/run-and-post-run@v1
@@ -45,7 +53,7 @@ runs:
           pew new ${{ env.VENV }} -d -r ${{ github.action_path}}/requirements.txt
           pew in ${{ env.VENV }} python ${{ github.action_path }}/inputs.py
         post: pew rm ${{ env.VENV }}
-        shell: bash
+        shell: ${{ env.SHELL }}
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
         TS_TAGS: ${{ inputs.tags }}
@@ -55,22 +63,22 @@ runs:
 
     - name: Install Tailscale (Linux)
       if: ${{ runner.os == 'Linux' }}
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: curl -fsSL https://tailscale.com/install.sh | sh
 
     - name: Install Tailscale (macoS)
       if: ${{ runner.os == 'macOS' }}
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: brew install tailscale
 
     - name: Install Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: choco install tailscale -y
 
     - name: Start tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
-      shell: bash
+      shell: ${{ env.SHELL }}
       run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
 
     - name: Connect to Tailscale (macOS and Linux)
@@ -79,7 +87,7 @@ runs:
       with:
         run: sudo tailscale up ${{ env.TAILSCALE_ARGS }}
         post: sudo tailscale logout
-        shell: bash
+        shell: ${{ env.SHELL }}
 
     - name: Connect to Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
@@ -87,5 +95,5 @@ runs:
       with:
         run: ./tailscale.exe up ${{ env.TAILSCALE_ARGS }}
         post: ./tailscale.exe logout
-        shell: bash
+        shell: ${{ env.SHELL }}
         working-directory: "C:/Program Files/Tailscale"
