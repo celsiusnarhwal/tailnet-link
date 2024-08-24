@@ -11,10 +11,6 @@ inputs:
     description: |
       A comma-separated list of tags to apply to nodes authenticated by this action.
     required: false
-  version:
-    description: The version of Tailscale to use.
-    required: true
-    default: latest
   extra-args:
     description: Optional additional arguments to `tailscale up`.
     required: false
