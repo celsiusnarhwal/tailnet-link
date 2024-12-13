@@ -1,0 +1,33 @@
+name: Tailnet Connect
+description: Connect your GitHub Actions workflow to Tailscale
+branding:
+  icon: arrow-right-circle
+  color: gray-dark
+inputs:
+  authkey:
+    description: A Tailscale auth key or OAuth client secret.
+    required: true
+  tags:
+    description: |
+      A comma-separated list of tags to apply to nodes authenticated by this action.
+    required: false
+  extra-args:
+    description: Optional additional arguments to `tailscale up`.
+    required: false
+  tailscaled-extra-args:
+    description: Optional additional arguments to `tailscaled`.
+    required: false
+  hostname:
+    description: A fixed machine name.
+    required: false
+
+
+runs:
+  using: composite
+  steps:
+    - name: Connect to Tailscale
+      uses: celsiusnarhwal/tailnet-link@v1
+      with:
+        authkey: ${{ inputs.authkey }}
+      env:
+        TAILNET_LINK_CONNECT_ONLY: 1

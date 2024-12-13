@@ -1,0 +1,20 @@
+name: Tailnet Disconnect
+description: Disconnect your GitHub Actions workflow from Tailscale
+branding:
+  icon: arrow-right-circle
+  color: gray-dark
+
+
+runs:
+  using: composite
+  steps:
+    - name: Disconnect from Tailscale (macOS and Linux)
+      if: ${{ runner.os != 'Windows' }}
+      shell: bash
+      run: sudo tailscale logout
+
+    - name: Disconnect from Tailscale (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      shell: bash
+      run: ./tailscale.exe logout
+      working-directory: C:/Program Files/Tailscale
