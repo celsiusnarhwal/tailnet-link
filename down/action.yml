@@ -11,10 +11,6 @@ runs:
     - name: Set up uv
       uses: astral-sh/setup-uv@v3
 
-    - name: Install tscmd
-      shell: bash
-      run: uv tool install git+https://github.com/celsiusnarhwal/tailnet-link/#subdirectory=tscmd
-
     - name: Disconnect from Tailscale
       shell: bash
-      run: tscmd logout
+      run: uvx git+https://github.com/celsiusnarhwal/tailnet-link/#subdirectory=tscmd logout

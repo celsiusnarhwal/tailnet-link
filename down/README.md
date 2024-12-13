@@ -10,6 +10,9 @@ This action does not take any inputs.
   uses: celsiusnarhwal/tailnet-link/down@v1
 ```
 
+> [!CAUTION]
+> Do not use this action and the main Tailnet Link action in the same workflow job.
+
 Note that using Tailnet Link Up with an [OAuth client secret](https://tailscale.com/kb/1215/oauth-clients) will always
 create an [ephemeral node](https://tailscale.com/kb/1111/ephemeral-nodes) that Tailscale will eventually remove from
 your Tailnet even if you do not use this action.
