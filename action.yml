@@ -24,37 +24,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set Up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.12
-
-    - name: Setup
-      id: setup
-      shell: python
-      run: |
-        import os
-        import sys
-        import uuid
-        
-        if sys.platform == "win32":
-          tailscale = "./tailscale.exe"
-          shell = "powershell"
-        else:
-          tailscale = "sudo tailscale"
-          shell = "bash"
-
-        print(f"TAILSCALE={tailscale}\nSHELL={shell}\nVENV={uuid.uuid4().hex}", file=open(os.getenv("GITHUB_ENV"), "a"))
-
-    - name: Handle Inputs
-      uses: gacts/run-and-post-run@v1
-      with:
-        run: |
-          pipx install pew
-          pew new ${{ env.VENV }} -d -r ${{ github.action_path}}/requirements.txt
-          pew in ${{ env.VENV }} python ${{ github.action_path }}/inputs.py
-        post: pew rm ${{ env.VENV }}
-        shell: ${{ env.SHELL }}
+    - name: Set Up uv
+      uses: astral-sh/setup-uv@v3
+      
+    - name: Get Arguments
+      run: uv run '${{ github.action_path }}/args.py'
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
         TS_TAGS: ${{ inputs.tags }}
@@ -64,30 +38,30 @@ runs:
 
     - name: Install Tailscale (Linux)
       if: ${{ runner.os == 'Linux' }}
-      shell: ${{ env.SHELL }}
+      shell: bash
       run: curl -fsSL https://tailscale.com/install.sh | sh
 
     - name: Install Tailscale (macoS)
       if: ${{ runner.os == 'macOS' }}
-      shell: ${{ env.SHELL }}
+      shell: bash
       run: brew install tailscale
 
     - name: Install Tailscale (Windows)
       if: ${{ runner.os == 'Windows' }}
-      shell: ${{ env.SHELL }}
+      shell: bash
       run: choco install tailscale -y
 
     - name: Start tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
-      shell: ${{ env.SHELL }}
-      run: sudo tailscaled ${{ env.TAILSCALED_ARGS }} &
+      shell: bash
+      run: sudo tailscaled ${{ steps.args.outputs.daemon }} &
 
     - name: Connect to Tailscale
       uses: gacts/run-and-post-run@v1
       with:
         run: |
-          ${{ env.TAILSCALE }} up ${{ env.TAILSCALE_ARGS }}
-          echo "Connected to $(${{ env.TAILSCALE }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ env.TAILSCALE }} ip -4))"
-        post: ${{ env.TAILSCALE }} logout
-        shell: ${{ env.SHELL }}
+          ${{ steps.args.outputs.cmd }} up ${{ steps.args.outputs.up }}
+          echo "Connected to $(${{ steps.args.outputs.cmd }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ steps.args.outputs.cmd }} ip -4))"
+        post: ${{ steps.args.outputs.cmd }} logout
+        shell: bash
         working-directory: ${{ runner.os == 'Windows' && 'C:/Program Files/Tailscale' || '' }}
