@@ -25,8 +25,13 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Checkout celsiusnarhwal/tailnet-link
+      uses: actions/checkout@v4
+      with:
+        path: ${{ runner.temp }}
+
     - name: Connect to Tailscale
-      uses: celsiusnarhwal/tailnet-link@v1
+      uses: ${{ runner.temp }}/celsiusnarhwal/tailnet-link/action.yml
       with:
         authkey: ${{ inputs.authkey }}
         tags: ${{ inputs.tags }}
