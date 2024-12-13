@@ -18,13 +18,13 @@ and [Chocolatey](https://community.chocolatey.org/packages/tailscale) on Windows
 
 ### Inputs
 
-| **Name**                | **Description**                                                                                                                                                  | **Required?**                                                      |
-|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| `authkey`               | An [auth key](https://tailscale.com/kb/1085/auth-keys) or [OAuth client secret](https://tailscale.com/kb/1215/oauth-clients) with the `auth_key` scope.          | Yes                                                                |
-| `tags`                  | A comma separated list of [tags](https://tailscale.com/kb/1068/tags) to apply to nodes authenticated with this action. Each tag must begin with `tag:`.          | Yes if you use an OAuth client secret for `authkey`; no otherwise. |
-| `hostname`              | A fixed [machine name](https://tailscale.com/kb/1098/machine-names). A machine name will be derived from the runner's system hostname if you don't provide this. | No                                                                 |
-| `extra-args`            | Additional arguments to [`tailscale up`](https://tailscale.com/kb/1241/tailscale-up). May not include `--auth-key`, `--advertise-tags`, or `--hostname`.         | No                                                                 |
-| `tailscaled-extra-args` | Additional arguments to [`tailscaled`](https://tailscale.com/kb/1278/tailscaled#flags-to-tailscaled). Has no effect on Windows runners.                          | No                                                                 |
+| **Name**                | **Description**                                                                                                                                                  | **Required?**                                             |
+|-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|
+| `authkey`               | An [auth key](https://tailscale.com/kb/1085/auth-keys) or [OAuth client secret](https://tailscale.com/kb/1215/oauth-clients) with the `auth_key` scope.          | Yes                                                       |
+| `tags`                  | A comma separated list of [tags](https://tailscale.com/kb/1068/tags) to apply to nodes authenticated with this action. Each tag must begin with `tag:`.          | Yes if `authkey` is an OAuth client secret; no otherwise. |
+| `hostname`              | A fixed [machine name](https://tailscale.com/kb/1098/machine-names). A machine name will be derived from the runner's system hostname if you don't provide this. | No                                                        |
+| `extra-args`            | Additional arguments to [`tailscale up`](https://tailscale.com/kb/1241/tailscale-up). May not include `--auth-key`, `--advertise-tags`, or `--hostname`.         | No                                                        |
+| `tailscaled-extra-args` | Additional arguments to [`tailscaled`](https://tailscale.com/kb/1278/tailscaled#flags-to-tailscaled). Has no effect on Windows runners.                          | No                                                        |
 
 > [!WARNING]
 > If you're using [tailnet lock](https://tailscale.com/kb/1226/tailnet-lock), `authkey` must be
