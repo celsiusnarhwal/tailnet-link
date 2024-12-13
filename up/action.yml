@@ -25,11 +25,18 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Get Action Ref
+      id: ref
+      shell: bash
+      run: echo "ref=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
+      with:
+        working-directory: ${{ github.action_path }}
+
     - name: Checkout celsiusnarhwal/tailnet-link
       uses: actions/checkout@v4
       with:
         path: celsiusnarhwal/tailnet-link
-        ref: ${{ github.action_ref }}
+        ref: ${{ steps.ref.outputs.ref }}
 
     - name: Connect to Tailscale
       uses: ./celsiusnarhwal/tailnet-link
