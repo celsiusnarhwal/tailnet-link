@@ -29,6 +29,9 @@ runs:
       uses: celsiusnarhwal/tailnet-link@v1
       with:
         authkey: ${{ inputs.authkey }}
-        tags: tag:github-actions
+        tags: ${{ inputs.tags }}
+        extra-args: ${{ inputs.extra-args }}
+        tailscaled-extra-args: ${{ inputs.tailscaled-extra-args }}
+        hostname: ${{ inputs.hostname }}
       env:
-        TAILNET_LINK_CONNECT_ONLY: 1
+        _TAILNET_LINK_DO_NOT_DISCONNECT: 1
