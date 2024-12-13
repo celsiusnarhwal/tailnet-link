@@ -9,4 +9,4 @@ def main():
     else:
         tailscale = ["sudo", "tailscale"]
 
-    subprocess.run(tailscale + sys.argv[1:], shell=True)
+    subprocess.run(tailscale + sys.argv[1:])
