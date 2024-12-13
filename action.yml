@@ -58,9 +58,14 @@ runs:
       shell: bash
       run: sudo tailscaled ${{ steps.args.outputs.daemon }} &
 
+    - name: Checkout celsiusnarhwal/tailnet-link
+      uses: actions/checkout@v4
+      with:
+        path: celsiusnarhwal/tailnet-link
+
     - name: Install tscmd
       shell: bash
-      run: uv tool install git+https://github.com/celsiusnarhwal/tailnet-link/#subdirectory=tscmd
+      run: uv tool install git+./celsiusnarhwal/tailnet-link/tscmd
 
     - name: Connect to Tailscale
       uses: gacts/run-and-post-run@v1
