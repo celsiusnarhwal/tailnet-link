@@ -48,7 +48,7 @@ class TailscaleSettings(BaseSettings):
     @model_validator(mode="after")
     def validate_tags(self):
         if self.authkey_is_oauth and not self.tags:
-            hachitool.error("You must provide at least one tag when using an OAuth secret.")
+            hachitool.fail("You must provide at least one tag when using an OAuth secret.")
 
         return self
 
@@ -62,7 +62,7 @@ class TailscaleSettings(BaseSettings):
                 found.append(flag)
 
         if found:
-            hachitool.error(f"extra-args may not contain {inflect.join(found, conj='or')}.")
+            hachitool.fail(f"extra-args may not contain {inflect.join(found, conj='or')}.")
 
         return v
 
