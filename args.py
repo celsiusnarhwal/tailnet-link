@@ -81,7 +81,7 @@ class TailscaleSettings(BaseSettings):
 settings = TailscaleSettings()
 
 hachitool.set_output(
-    cmd="./tailscale.exe" if sys.platform == "win32" else "sudo tailscale",
+    tailscale="./tailscale.exe" if sys.platform == "win32" else "sudo tailscale",
     daemon=settings.tailscaled_extra_args,
     up=settings.tailscale_up_args,
 )
