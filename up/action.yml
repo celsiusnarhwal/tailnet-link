@@ -24,7 +24,6 @@ inputs:
 
 runs:
   using: composite
-  env:
   steps:
     - name: Get Action Ref
       id: ref
