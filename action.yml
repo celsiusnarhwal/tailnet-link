@@ -53,10 +53,10 @@ runs:
       shell: bash
       run: choco install tailscale -y
 
-#    - name: Start tailscaled (macOS and Linux)
-#      if: ${{ runner.os != 'Windows' }}
-#      shell: bash
-#      run: sudo tailscaled ${{ steps.args.outputs.daemon }} &
+    - name: Start tailscaled (macOS and Linux)
+      if: ${{ runner.os != 'Windows' }}
+      shell: bash
+      run: sudo tailscaled ${{ steps.args.outputs.daemon }} &
 
     - name: Install tscmd
       shell: bash
@@ -70,12 +70,3 @@ runs:
           echo "Connected to $(tscmd status --json --peers=false | jq -r .CurrentTailnet.Name) ($(tscmd ip -4))"
         post: tscmd logout
         shell: bash
-#    - name: Connect to Tailscale
-#      uses: gacts/run-and-post-run@v1
-#      with:
-#        run: |
-#          ${{ steps.args.outputs.tailscale }} up ${{ steps.args.outputs.up }}
-#          echo "Connected to $(${{ steps.args.outputs.tailscale }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ steps.args.outputs.tailscale }} ip -4))"
-#        post: [[ -n ${TAILNET_LINK_CONNECT_ONLY} ]] && ${{ steps.args.outputs.tailscale }} logout
-#        shell: bash
-#        working-directory: ${{ runner.os == 'Windows' && 'C:/Program Files/Tailscale' || '' }}
