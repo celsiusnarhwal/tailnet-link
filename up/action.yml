@@ -29,7 +29,7 @@ runs:
       uses: actions/checkout@v4
 
     - name: Connect to Tailscale
-      uses: ./celsiusnarhwal/tailnet-link/action.yml
+      uses: ./celsiusnarhwal/tailnet-link
       with:
         authkey: ${{ inputs.authkey }}
         tags: ${{ inputs.tags }}
