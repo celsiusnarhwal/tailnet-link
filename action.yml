@@ -65,7 +65,7 @@ runs:
 
     - name: Install tscmd
       shell: bash
-      run: uv tool install git+./celsiusnarhwal/tailnet-link/tscmd
+      run: uv tool install ./celsiusnarhwal/tailnet-link/tscmd
 
     - name: Connect to Tailscale
       uses: gacts/run-and-post-run@v1
