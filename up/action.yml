@@ -24,9 +24,11 @@ inputs:
 
 runs:
   using: composite
+  env:
+    TAILNET_LINK_REF: ${{ github.action_ref }}
   steps:
     - name: Connect to Tailscale
-      uses: celsiusnarhwal/tailnet-link@${{ github.action_ref }}
+      uses: celsiusnarhwal/tailnet-link@${{ env.TAILNET_LINK_REF }}
       with:
         authkey: ${{ inputs.authkey }}
         tags: ${{ inputs.tags }}
