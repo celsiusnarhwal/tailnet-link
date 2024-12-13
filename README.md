@@ -7,9 +7,12 @@ Unlike Tailscale's Linux-only [official action](https://github.com/tailscale/git
 macOS and Windows runners.
 
 This action allows authentication with either an [auth key](https://tailscale.com/kb/1085/auth-keys) or an
-[OAuth client secret](https://tailscale.com/kb/1215/oauth-clients) with the `devices` scope. Using an OAuth client
+[OAuth client secret](https://tailscale.com/kb/1215/oauth-clients) with the `auth_key` scope. Using an OAuth client
 secret is recommended; you won't have to rotate it every 90 days, and nodes authenticated with this action will be
 automatically preapproved on tailnets that use [device approval](https://tailscale.com/kb/1099/device-approval).
+
+Tailscale is installed via [the official script](https://tailscale.com/install.sh) on Linux, [Homebrew](https://formulae.brew.sh/formula/tailscale) on Mac,
+and [Chocolatey](https://community.chocolatey.org/packages/tailscale) on Windows.
 
 ## Usage
 
@@ -17,11 +20,11 @@ automatically preapproved on tailnets that use [device approval](https://tailsca
 
 | **Name**                | **Description**                                                                                                                                                  | **Required?**                                                      |
 |-------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| `authkey`               | An [auth key](https://tailscale.com/kb/1085/auth-keys) or [OAuth client secret](https://tailscale.com/kb/1215/oauth-clients) with the `devices` scope.           | Yes                                                                |
+| `authkey`               | An [auth key](https://tailscale.com/kb/1085/auth-keys) or [OAuth client secret](https://tailscale.com/kb/1215/oauth-clients) with the `auth_key` scope.          | Yes                                                                |
 | `tags`                  | A comma separated list of [tags](https://tailscale.com/kb/1068/tags) to apply to nodes authenticated with this action. Each tag must begin with `tag:`.          | Yes if you use an OAuth client secret for `authkey`; no otherwise. |
 | `hostname`              | A fixed [machine name](https://tailscale.com/kb/1098/machine-names). A machine name will be derived from the runner's system hostname if you don't provide this. | No                                                                 |
 | `extra-args`            | Additional arguments to [`tailscale up`](https://tailscale.com/kb/1241/tailscale-up). May not include `--auth-key`, `--advertise-tags`, or `--hostname`.         | No                                                                 |
-| `tailscaled-extra-args` | Additional arguments to [`tailscaled`](https://tailscale.com/kb/1278/tailscaled#flags-to-tailscaled). Only applicable on macOS and Linux runners.                | No                                                                 |
+| `tailscaled-extra-args` | Additional arguments to [`tailscaled`](https://tailscale.com/kb/1278/tailscaled#flags-to-tailscaled). Has no effect on Windows runners.                          | No                                                                 |
 
 > [!WARNING]
 > If you're using [tailnet lock](https://tailscale.com/kb/1226/tailnet-lock), `authkey` must be
