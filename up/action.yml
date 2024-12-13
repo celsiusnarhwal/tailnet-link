@@ -28,7 +28,7 @@ runs:
     - name: Get Action Ref
       id: ref
       shell: bash
-      runs: echo "ref=${{ github.action_ref }}" >> ${GITHUB_OUTPUT}
+      run: echo "ref=${{ github.action_ref }}" >> ${GITHUB_OUTPUT}
 
     - name: Connect to Tailscale
       uses: celsiusnarhwal/tailnet-link@${{ steps.ref.outputs.ref }}
