@@ -29,5 +29,6 @@ runs:
       uses: celsiusnarhwal/tailnet-link@v1
       with:
         authkey: ${{ inputs.authkey }}
+        tags: tag:github-actions
       env:
         TAILNET_LINK_CONNECT_ONLY: 1
