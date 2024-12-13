@@ -29,8 +29,7 @@ runs:
       id: ref
       shell: bash
       run: echo "ref=$(git rev-parse HEAD)" >> ${GITHUB_OUTPUT}
-      with:
-        working-directory: ${{ github.action_path }}
+      working-directory: ${{ github.action_path }}
 
     - name: Checkout celsiusnarhwal/tailnet-link
       uses: actions/checkout@v4
