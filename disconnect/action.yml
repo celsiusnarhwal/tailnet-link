@@ -18,3 +18,7 @@ runs:
     - name: Disconnect from Tailscale
       shell: bash
       run: tscmd logout
+
+    - name: Uninstall tscmd
+      shell: bash
+      run: uv tool uninstall tscmd
