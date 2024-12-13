@@ -15,9 +15,6 @@ This action allows authentication with either an [auth key](https://tailscale.co
 secret is recommended; you won't have to rotate it every 90 days, and nodes authenticated with this action will be
 automatically preapproved on tailnets that use [device approval](https://tailscale.com/kb/1099/device-approval).
 
-Tailscale is installed via [the official script](https://tailscale.com/install.sh) on Linux, [Homebrew](https://formulae.brew.sh/formula/tailscale) on Mac,
-and [Chocolatey](https://community.chocolatey.org/packages/tailscale) on Windows.
-
 ## Usage
 
 ### Inputs
