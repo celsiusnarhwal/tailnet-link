@@ -1,4 +1,4 @@
-name: Tailnet Disconnect
+name: Tailnet Link Down
 description: Disconnect your GitHub Actions workflow from Tailscale
 branding:
   icon: arrow-right-circle

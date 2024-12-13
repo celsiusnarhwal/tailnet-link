@@ -1,4 +1,4 @@
-name: Tailnet Connect
+name: Tailnet Link Up
 description: Connect your GitHub Actions workflow to Tailscale
 branding:
   icon: arrow-right-circle
