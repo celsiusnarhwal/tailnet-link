@@ -53,10 +53,10 @@ runs:
       shell: bash
       run: choco install tailscale -y
 
-    - name: Start tailscaled (macOS and Linux)
-      if: ${{ runner.os != 'Windows' }}
-      shell: bash
-      run: sudo tailscaled ${{ steps.args.outputs.daemon }} &
+#    - name: Start tailscaled (macOS and Linux)
+#      if: ${{ runner.os != 'Windows' }}
+#      shell: bash
+#      run: sudo tailscaled ${{ steps.args.outputs.daemon }} &
 
     - name: Install tscmd
       shell: bash
