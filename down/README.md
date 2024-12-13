@@ -6,7 +6,7 @@ must be run before this action.
 This action does not take any inputs.
 
 ```yaml
-- name: Connect to Tailscale
+- name: Disconnect from Tailscale
   uses: celsiusnarhwal/tailnet-link/down@v1
 ```
 
