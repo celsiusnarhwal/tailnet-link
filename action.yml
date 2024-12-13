@@ -62,8 +62,8 @@ runs:
       uses: gacts/run-and-post-run@v1
       with:
         run: |
-          ${{ steps.args.outputs.cmd }} up ${{ steps.args.outputs.up }}
-          echo "Connected to $(${{ steps.args.outputs.cmd }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ steps.args.outputs.cmd }} ip -4))"
-        post: ${{ steps.args.outputs.cmd }} logout
+          ${{ steps.args.outputs.tailscale }} up ${{ steps.args.outputs.up }}
+          echo "Connected to $(${{ steps.args.outputs.tailscale }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ steps.args.outputs.tailscale }} ip -4))"
+        post: ${{ steps.args.outputs.tailscale }} logout
         shell: bash
         working-directory: ${{ runner.os == 'Windows' && 'C:/Program Files/Tailscale' || '' }}
