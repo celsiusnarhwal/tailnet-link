@@ -1,4 +1,7 @@
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       authkey:
@@ -15,6 +18,6 @@ jobs:
       - name: Connect to Tailscale
         uses: celsiusnarhwal/tailnet-link@main
         with:
-          authkey: ${{ inputs.authkey }}
+          authkey: ${{ inputs.authkey || secrets.TS_OAUTH_SECRET }}
           tags: tag:github-actions
           extra-args: --accept-routes --accept-dns
