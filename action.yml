@@ -64,6 +64,9 @@ runs:
         run: |
           ${{ steps.args.outputs.tailscale }} up ${{ steps.args.outputs.up }}
           echo "Connected to $(${{ steps.args.outputs.tailscale }} status --json --peers=false | jq -r .CurrentTailnet.Name) ($(${{ steps.args.outputs.tailscale }} ip -4))"
-        post: ${{ steps.args.outputs.tailscale }} logout
+        post: |
+          if [ -n ${TAILNET_LINK_CONNECT_ONLY} ]; then
+            ${{ steps.args.outputs.tailscale }} logout
+          fi
         shell: bash
         working-directory: ${{ runner.os == 'Windows' && 'C:/Program Files/Tailscale' || '' }}
