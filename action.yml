@@ -62,7 +62,7 @@ runs:
       shell: bash
       run: uv tool install https://github.com/${{ github.action_repository }}#subdirectory=tscmd
 
-    - namme: Connect to Tailscale
+    - name: Connect to Tailscale
       uses: gacts/run-and-post-run@v1
       with:
         run: |
