@@ -1,3 +1,12 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "hachitool",
+#     "inflect",
+#     "pydantic-settings",
+# ]
+# ///
+
 import os
 import socket
 import sys
@@ -8,15 +17,6 @@ from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 inflect = ifl.engine()
-
-
-def set_environment_variable(name: str, value: t.Any):
-    print(f"{name}={value}", file=open(os.getenv("GITHUB_ENV"), "a"))
-
-
-def error(message: str):
-    print(f"::error::{message}")
-    exit(1)
 
 
 class TailscaleSettings(BaseSettings):
@@ -33,18 +33,23 @@ class TailscaleSettings(BaseSettings):
         return self.authkey.startswith("tskey-client")
 
     @property
-    def full_authkey(self):
-        key = self.authkey
+    def tailscale_up_args(self):
+        authkey = self.authkey
 
         if self.authkey_is_oauth:
-            key += "?preauthorized=true&ephemeral=true"
+            authkey += "?preauthorized=true&ephemeral=true"
 
-        return key
+        args = f"--auth-key '{authkey}' --hostname {self.hostname} {self.extra_args}"
+
+        if self.tags:
+            args = f"--advertise-tags {self.tags} {args}"
+
+        return args
 
     @model_validator(mode="after")
     def validate_tags(self):
         if self.authkey_is_oauth and not self.tags:
-            error("You must provide at least one tag when using an OAuth secret.")
+            hachitool.error("You must provide at least one tag when using an OAuth secret.")
 
         return self
 
@@ -58,14 +63,14 @@ class TailscaleSettings(BaseSettings):
                 found.append(flag)
 
         if found:
-            error(f"extra-args may not contain {inflect.join(found, conj='or')}.")
+            hachitool.error(f"extra-args may not contain {inflect.join(found, conj='or')}.")
 
         return v
 
     @field_validator("tailscaled_extra_args")
     def validate_tailscaled_extra_args(cls, v):
         if v and sys.platform == "win32":
-            print("::warning::tailscaled-extra-args has no effect on Windows runners.")
+            hachitool.warning("tailscaled-extra-args has no effect on Windows runners.")
 
         return v
 
@@ -76,11 +81,8 @@ class TailscaleSettings(BaseSettings):
 
 settings = TailscaleSettings()
 
-set_environment_variable("TAILSCALED_ARGS", settings.tailscaled_extra_args)
-
-tailscale_args = f"--auth-key '{settings.full_authkey}' --hostname {settings.hostname} {settings.extra_args}"
-
-if settings.tags:
-    tailscale_args = f"--advertise-tags {settings.tags} {tailscale_args}"
-
-set_environment_variable("TAILSCALE_ARGS", tailscale_args)
+hachitool.set_output(
+    cmd="./tailscale.exe" if sys.platform == "win32" else "sudo tailscale",
+    daemon=settings.tailscaled_extra_args,
+    up=settings.tailscale_up_args,
+)
