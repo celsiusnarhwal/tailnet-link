@@ -1,5 +1,5 @@
 name: Tailnet Link
-description: Connect your GitHub Action workflow to Tailscale
+description: Connect your GitHub Actions workflow to Tailscale
 branding:
   icon: arrow-right-circle
   color: gray-dark
