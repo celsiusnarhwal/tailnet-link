@@ -29,6 +29,7 @@ runs:
       uses: actions/checkout@v4
       with:
         path: celsiusnarhwal/tailnet-link
+        ref: ${{ github.action_ref }}
 
     - name: Connect to Tailscale
       uses: ./celsiusnarhwal/tailnet-link
