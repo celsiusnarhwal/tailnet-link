@@ -8,9 +8,6 @@ branding:
 runs:
   using: composite
   steps:
-    - name: Set up uv
-      uses: astral-sh/setup-uv@v3
-
     - name: Disconnect from Tailscale
       shell: bash
-      run: uvx git+https://github.com/celsiusnarhwal/tailnet-link/#subdirectory=tscmd logout
+      run: tscmd logout
