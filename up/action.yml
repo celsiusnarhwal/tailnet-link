@@ -25,13 +25,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Get Action Ref
-      id: ref
-      shell: bash
-      run: echo "ref=${{ github.action_ref }}" >> ${GITHUB_OUTPUT}
-
     - name: Connect to Tailscale
-      uses: celsiusnarhwal/tailnet-link@${{ steps.ref.outputs.ref }}
+      uses: celsiusnarhwal/tailnet-link@v1
       with:
         authkey: ${{ inputs.authkey }}
         tags: ${{ inputs.tags }}
