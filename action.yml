@@ -28,6 +28,7 @@ runs:
       uses: astral-sh/setup-uv@v3
 
     - name: Get Arguments
+      shell: bash
       run: uv run '${{ github.action_path }}/args.py'
       env:
         TS_AUTHKEY: ${{ inputs.authkey }}
