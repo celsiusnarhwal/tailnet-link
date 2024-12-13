@@ -70,7 +70,3 @@ runs:
           echo "Connected to $(tscmd status --json --peers=false | jq -r .CurrentTailnet.Name) ($(tscmd ip -4))"
         post: tscmd logout
         shell: bash
-
-    - name: Uninstall tscmd
-      shell: bash
-      run: uv tool uninstall tscmd
