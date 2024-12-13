@@ -27,6 +27,8 @@ runs:
   steps:
     - name: Checkout celsiusnarhwal/tailnet-link
       uses: actions/checkout@v4
+      with:
+        path: celsiusnarhwal/tailnet-link
 
     - name: Connect to Tailscale
       uses: ./celsiusnarhwal/tailnet-link
