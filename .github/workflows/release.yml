@@ -16,4 +16,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Tag Release
-        uses: celsiusnarhwal/meta-action@main
+        uses: celsiusnarhwal/tag-action-release@v1
