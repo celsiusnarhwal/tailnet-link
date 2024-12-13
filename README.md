@@ -4,7 +4,7 @@ Tailnet Link connects a GitHub workflow to your [Tailscale](https://tailscale.co
 workflow ends.
 
 > [!TIP]
-> If you want manual control over when Tailscale is disconnected, see the [Tailnet Link Up](https://github.com/celsiusnarhwal/tailnet-link/blob/main/up)
+> If you want manual control over when Tailscale is disconnected, see [Tailnet Link Up](https://github.com/celsiusnarhwal/tailnet-link/blob/main/up)
 > and [Tailnet Link Down](https://github.com/celsiusnarhwal/tailnet-link/blob/main/down).
 
 Unlike Tailscale's Linux-only [official action](https://github.com/tailscale/github-action), Tailnet Link also supports
