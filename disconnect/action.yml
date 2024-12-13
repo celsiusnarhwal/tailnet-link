@@ -8,13 +8,13 @@ branding:
 runs:
   using: composite
   steps:
-    - name: Disconnect from Tailscale (macOS and Linux)
-      if: ${{ runner.os != 'Windows' }}
-      shell: bash
-      run: sudo tailscale logout
+    - name: Set up uv
+      uses: astral-sh/setup-uv@v3
 
-    - name: Disconnect from Tailscale (Windows)
-      if: ${{ runner.os == 'Windows' }}
+    - name: Install tscmd
       shell: bash
-      run: ./tailscale.exe logout
-      working-directory: C:/Program Files/Tailscale
+      run: uv tool install git+https://github.com/celsiusnarhwal/tailnet-link/#subdirectory=tscmd
+
+    - name: Disconnect from Tailscale
+      shell: bash
+      run: tscmd logout
