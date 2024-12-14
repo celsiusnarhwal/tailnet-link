@@ -28,7 +28,7 @@ runs:
     - run: ls -a ${{ github.action_path }}/..
       shell: bash
     - name: Connect to Tailscale
-      uses: celsiusnarhwal/tailnet-link@v1
+      uses: celsiusnarhwal/tailnet-link
       with:
         authkey: ${{ inputs.authkey }}
         tags: ${{ inputs.tags }}
