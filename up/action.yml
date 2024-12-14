@@ -25,15 +25,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Dump Inputs to JSON
-      id: inputs
-      shell: bash
-      run: echo "inputs=${{ toJSON(inputs) }}" >> ${GITHUB_OUTPUT}
-
     - name: Connect to Tailscale
       uses: jenseng/dynamic-uses@v1
       with:
         uses: ${{ github.action_path }}/..
-        with: ${{ steps.inputs.outputs.inputs }}
+        with: ${{ toJSON(inputs) }}
       env:
         _TAILNET_LINK_DO_NOT_DISCONNECT: 1
