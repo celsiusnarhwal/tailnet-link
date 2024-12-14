@@ -34,6 +34,8 @@ runs:
 
         path = Path(os.path.relpath(os.getenv("ACTION_PATH") + "/.."))
         print(f"path={path}", file=open(os.getenv("GITHUB_OUTPUT"), "a"))
+      env:
+        ACTION_PATH: ${{ github.action_path }}
 
     - name: Connect to Tailscale
       uses: jenseng/dynamic-uses@v1
