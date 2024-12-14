@@ -60,7 +60,7 @@ runs:
 
     - name: Install tscmd
       shell: bash
-      run: uv tool install ${{ github.action_path }}/tscmd
+      run: uv tool install '${{ github.action_path }}/tscmd'
 
     - name: Connect to Tailscale
       uses: gacts/run-and-post-run@v1
