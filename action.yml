@@ -41,7 +41,9 @@ runs:
     - name: Install Tailscale (Linux)
       if: ${{ runner.os == 'Linux' }}
       shell: bash
-      run: curl -fsSL https://tailscale.com/install.sh | sh
+      run: | 
+        curl -fsSL https://tailscale.com/install.sh | sh
+        sudo systemctl stop tailscaled
 
     - name: Install Tailscale (macoS)
       if: ${{ runner.os == 'macOS' }}
@@ -55,10 +57,8 @@ runs:
 
     - name: Start tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
-      uses: jarvusinnovations/background-action@v1
-      with:
-        run: sudo tailscaled ${{ steps.args.outputs.daemon }}
-        wait-on: socket:/var/run/tailscale/tailscaled.sock
+      shell: bash
+      run: sudo tailscaled ${{ steps.args.outputs.daemon }} &
 
     - name: Install tscmd
       shell: bash
