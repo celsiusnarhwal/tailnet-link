@@ -25,10 +25,10 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: ls -a && ls -a ..
+    - run: ls -a ${{ github.action_path }}/..
       shell: bash
     - name: Connect to Tailscale
-      uses: celsiusnarhwal/tailnet-link@v1
+      uses: ../
       with:
         authkey: ${{ inputs.authkey }}
         tags: ${{ inputs.tags }}
