@@ -67,6 +67,6 @@ runs:
       with:
         run: |
           tscmd up ${{ steps.args.outputs.up }}
-          echo "::notice::Connected to $(tscmd status --json --peers=false | jq -r .CurrentTailnet.Name) ($(tscmd ip -4))"
+          echo "Connected to $(tscmd status --json --peers=false | jq -r .CurrentTailnet.Name) ($(tscmd ip -4))"
         post: tscmd logout
         shell: bash
