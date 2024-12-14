@@ -25,10 +25,15 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Get Relative Path to Main Action
+      id: action
+      shell: bash
+      run: echo "path=$(realpath --relative-to=. ${{ github.action_path }}/..)" >> ${GITHUB_OUTPUT}
+
     - name: Connect to Tailscale
       uses: jenseng/dynamic-uses@v1
       with:
-        uses: ./${{ github.action_path }}/..
+        uses: ${{ steps.action.outputs.path }}
         with: ${{ toJSON(inputs) }}
       env:
         _TAILNET_LINK_DO_NOT_DISCONNECT: 1
