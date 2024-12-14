@@ -33,7 +33,7 @@ runs:
     - name: Connect to Tailscale
       uses: jenseng/dynamic-uses@v1
       with:
-        uses: ${{ steps.action.outputs.path }}
+        uses: ./${{ steps.action.outputs.path }}
         with: ${{ toJSON(inputs) }}
       env:
         _TAILNET_LINK_DO_NOT_DISCONNECT: 1
