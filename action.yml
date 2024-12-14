@@ -55,10 +55,10 @@ runs:
 
     - name: Start tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
-      shell: bash
-      run: | 
-        sudo kill -9 $(sudo lsof -t /var/run/tailscale/tailscaled.sock)
-        sudo tailscaled ${{ steps.args.outputs.daemon }} &
+      uses: jarvusinnovations/background-action@v4
+      with:
+        run: sudo tailscaled ${{ steps.args.outputs.daemon }}
+        wait-on: socket:/var/run/tailscale/tailscaled.sock
 
     - name: Install tscmd
       shell: bash
