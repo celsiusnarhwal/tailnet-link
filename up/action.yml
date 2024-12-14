@@ -25,6 +25,8 @@ inputs:
 runs:
   using: composite
   steps:
+    - run: ls -a && ls -a ..
+      shell: bash
     - name: Connect to Tailscale
       uses: ../
       with:
