@@ -55,7 +55,7 @@ runs:
 
     - name: Start tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
-      uses: jarvusinnovations/background-action@v4
+      uses: jarvusinnovations/background-action@v1
       with:
         run: sudo tailscaled ${{ steps.args.outputs.daemon }}
         wait-on: socket:/var/run/tailscale/tailscaled.sock
