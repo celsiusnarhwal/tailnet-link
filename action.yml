@@ -56,7 +56,9 @@ runs:
     - name: Start tailscaled (macOS and Linux)
       if: ${{ runner.os != 'Windows' }}
       shell: bash
-      run: sudo tailscaled ${{ steps.args.outputs.daemon }} &
+      run: | 
+        sudo kill -9 $(sudo lsof -t /var/run/tailscale/tailscaled.sock)
+        sudo tailscaled ${{ steps.args.outputs.daemon }} &
 
     - name: Install tscmd
       shell: bash
