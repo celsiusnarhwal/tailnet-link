@@ -25,15 +25,15 @@ inputs:
 runs:
   using: composite
   steps:
-    - run: ls -a ${{ github.action_path }}/..
-      shell: bash
     - name: Connect to Tailscale
-      uses: ./
+      uses: jenseng/dynamic-uses@v1
       with:
-        authkey: ${{ inputs.authkey }}
-        tags: ${{ inputs.tags }}
-        extra-args: ${{ inputs.extra-args }}
-        tailscaled-extra-args: ${{ inputs.tailscaled-extra-args }}
-        hostname: ${{ inputs.hostname }}
+        uses: ${{ github.action_path }}/..
+        with:
+          authkey: ${{ inputs.authkey }}
+          tags: ${{ inputs.tags }}
+          extra-args: ${{ inputs.extra-args }}
+          tailscaled-extra-args: ${{ inputs.tailscaled-extra-args }}
+          hostname: ${{ inputs.hostname }}
       env:
         _TAILNET_LINK_DO_NOT_DISCONNECT: 1
