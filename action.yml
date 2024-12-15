@@ -63,7 +63,7 @@ runs:
     - name: Install tscmd
       shell: bash
       run: |
-        (echo "_TAILNET_LINK_TAILSCALE_BIN_PATH=$(dirnane $(which tailscale)) >> ${GITHUB_ENV}) || :
+        (echo "_TAILNET_LINK_TAILSCALE_BIN_PATH=$(dirnane $(which tailscale))" >> ${GITHUB_ENV}) || :
         uv tool install '${{ github.action_path }}/tscmd'
         echo $(dirname $(which tscmd)) >> ${GITHUB_PATH}
 
