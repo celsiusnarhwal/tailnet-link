@@ -15,7 +15,7 @@ This action allows authentication with either an [auth key](https://tailscale.co
 secret is recommended; you won't have to rotate it every 90 days, and nodes authenticated with this action will be
 automatically preapproved on tailnets that use [device approval](https://tailscale.com/kb/1099/device-approval).
 
-Running this action will make the Tailscale CLI available in your workflow via the `tailscale` command.
+Running this action will make the [Tailscale CLI](https://tailscale.com/kb/1080/cli) available in your workflow via the `tailscale` command.
 
 ## Usage
 
