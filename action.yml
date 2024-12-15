@@ -70,5 +70,5 @@ runs:
         run: |
           tscmd up ${{ steps.args.outputs.up }}
           echo "Connected to $(tscmd status --json --peers=false | jq -r .CurrentTailnet.Name) ($(tscmd ip -4))"
-        post: [[ -z "$_TAILNET_LINK_DO_NOT_DISCONNECT" ]] && tscmd logout
+        post: if -z ${_TAILNET_LINK_DO_NOT_DISCONNECT}; then tscmd logout; fi
         shell: bash
