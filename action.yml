@@ -70,7 +70,6 @@ runs:
       uses: gacts/run-and-post-run@v1
       with:
         run: |
-          which tailscale
           tscmd up ${{ steps.args.outputs.up }}
           echo "Connected to $(tscmd status --json --peers=false | jq -r .CurrentTailnet.Name) ($(tscmd ip -4))"
         post: if [ -z ${_TAILNET_LINK_DO_NOT_DISCONNECT} ]; then tscmd logout; fi
