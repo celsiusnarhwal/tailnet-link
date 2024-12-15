@@ -3,6 +3,8 @@
 This variant of [Tailnet Link](https://github.com/celsiusnarhwal/tailnet-link) connects a GitHub Actions workflow
 to Tailscale, but does _not_ explicitly disconnect it afterward. It takes the same inputs as Tailnet Link does.
 
+Running this action will make the [Tailscale CLI](https://tailscale.com/kb/1080/cli) available in your workflow via the `tailscale` command.
+
 ```yaml
 - name: Connect to Tailscale
   uses: celsiusnarhwal/tailnet-link/up@v1
