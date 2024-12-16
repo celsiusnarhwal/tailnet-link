@@ -4,7 +4,7 @@
 #     "hachitool",
 #     "inflect",
 #     "pydantic-settings",
-      "shortuuid",
+#     "shortuuid",
 # ]
 # ///
 
