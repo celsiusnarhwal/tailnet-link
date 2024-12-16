@@ -85,7 +85,6 @@ class TailscaleSettings(BaseSettings):
             return f"github-{platform.system()}-{platform.machine()}-{shortuuid.uuid()}"
             
         return v
-        # return v or f"github-{socket.gethostname()}"
 
 
 settings = TailscaleSettings()
