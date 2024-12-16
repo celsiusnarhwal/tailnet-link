@@ -7,8 +7,11 @@
 # ]
 # ///
 
+import json
+import os
 import socket
 import sys
+from pathlib import Path
 
 import hachitool
 import inflect as ifl
@@ -79,7 +82,22 @@ class TailscaleSettings(BaseSettings):
 
     @field_validator("hostname")
     def validate_hostname(cls, v):
-        return v or f"github-{socket.gethostname()}"
+        if not v:
+            github = json.loads(os.getenv("GITHUB"))
+            runner = json.loads(os.getenv("RUNNER"))
+            
+            repo = github["repository"]
+            workflow = Path(github["workflow"]).stem
+            run = github["run_number"]
+            attempt = github["run_attempt"]
+            os = runner["os"]
+            arch = runner["arch"]
+            
+            
+            return f"github-{repo}-{workflow}-{run}-{attempt}-{os}-{arch}"
+        
+        return v
+        # return v or f"github-{socket.gethostname()}"
 
 
 settings = TailscaleSettings()
