@@ -4,17 +4,17 @@
 #     "hachitool",
 #     "inflect",
 #     "pydantic-settings",
+      "shortuuid",
 # ]
 # ///
 
-import json
-import os
+import platform
 import socket
 import sys
-from pathlib import Path
 
 import hachitool
 import inflect as ifl
+import shortuuid
 from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -83,19 +83,8 @@ class TailscaleSettings(BaseSettings):
     @field_validator("hostname")
     def validate_hostname(cls, v):
         if not v:
-            github = json.loads(os.getenv("GITHUB"))
-            runner = json.loads(os.getenv("RUNNER"))
+            return f"github-{platform.name()}-{platform.arch()}-{shortuuid.uuid()}"
             
-            repo = github["repository"]
-            workflow = Path(github["workflow"]).stem
-            run = github["run_number"]
-            attempt = github["run_attempt"]
-            os = runner["os"]
-            arch = runner["arch"]
-            
-            
-            return f"github-{repo}-{workflow}-{run}-{attempt}-{os}-{arch}"
-        
         return v
         # return v or f"github-{socket.gethostname()}"
 
