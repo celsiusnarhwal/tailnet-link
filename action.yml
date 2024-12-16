@@ -37,8 +37,6 @@ runs:
         TS_EXTRA_ARGS: ${{ inputs.extra-args }}
         TS_TAILSCALED_EXTRA_ARGS: ${{ inputs.tailscaled-extra-args }}
         TS_HOSTNAME: ${{ inputs.hostname }}
-        GITHUB: ${{ toJSON(github) }}
-        RUNNER: ${{ toJSON(runner) }}
 
     - name: Install Tailscale (Linux)
       if: ${{ runner.os == 'Linux' }}
