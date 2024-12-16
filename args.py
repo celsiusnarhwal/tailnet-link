@@ -9,7 +9,6 @@
 # ///
 
 import platform
-import socket
 import sys
 
 import hachitool
