@@ -83,7 +83,7 @@ class TailscaleSettings(BaseSettings):
     @field_validator("hostname")
     def validate_hostname(cls, v):
         if not v:
-            return f"github-{platform.name()}-{platform.arch()}-{shortuuid.uuid()}"
+            return f"github-{platform.system()}-{platform.machine()}-{shortuuid.uuid()}"
             
         return v
         # return v or f"github-{socket.gethostname()}"
