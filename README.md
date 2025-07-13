@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> Tailscale's [official action](https://github.com/tailscale/github-action) now supports macOS and Windows, so there's no reason for me to maintain Tailnet Link anymore. You should use the official action instead.
+
 # Tailnet Link
 
 Tailnet Link connects a GitHub workflow to your [Tailscale](https://tailscale.com) network and disconnects it after the
